@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\KelolaBarangController;
-use App\Http\Controllers\JenisBarangController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SatuanController;
-use App\Http\Controllers\ManajemenUserController;
-use App\Http\Controllers\BarangMasukController;
-use App\Http\Controllers\BarangKeluarController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Controllers\SatuanController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\JenisBarangController;
+use App\Http\Controllers\BarangKeluarController;
+use App\Http\Controllers\KelolaBarangController;
+use App\Http\Controllers\ManajemenUserController;
 
 Route::get('/', function () {
     return Redirect::route('login');
@@ -27,9 +28,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'role:superadmin'])->group(function () {
-    Route::get('/superadmin', function () {
-        return view('superadmin.dashboard');
-    })->name('superadmin.dashboard');
+    Route::get('/superadmin', [DashboardController::class, 'index'])->name('superadmin.dashboard');
+    
     Route::resource('kelolabarang', KelolaBarangController::class);
     Route::resource('jenisbarang', JenisBarangController::class);
     Route::resource('satuan', SatuanController::class);
@@ -37,6 +37,7 @@ Route::middleware(['auth', 'role:superadmin'])->group(function () {
     Route::resource('barangmasuk', BarangMasukController::class);
     Route::resource('barangkeluar', BarangKeluarController::class);
 });
+
 
 Route::middleware(['auth', 'role:adminbarang'])->group(function () {
     Route::resource('kelolabarang', KelolaBarangController::class)->except(['destroy']);
