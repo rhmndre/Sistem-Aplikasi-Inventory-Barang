@@ -1,7 +1,56 @@
 <?php
 
+use App\Http\Controllers\KelolaBarangController;
+use App\Http\Controllers\JenisBarangController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SatuanController;
+use App\Http\Controllers\ManajemenUserController;
+use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\BarangKeluarController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redirect;
 
 Route::get('/', function () {
-    return view('welcome');
+    return Redirect::route('login');
 });
+
+Route::get('/dashboard', function () {
+    // Contoh: ambil barang dengan stok minimum dari model KelolaBarang
+    $barangMinimum = \App\Models\KelolaBarang::whereColumn('stok', '<=', 'minimum')->get();
+    return view('dashboard', compact('barangMinimum'));
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
+    Route::get('/superadmin', function () {
+        return view('superadmin.dashboard');
+    })->name('superadmin.dashboard');
+    Route::resource('kelolabarang', KelolaBarangController::class);
+    Route::resource('jenisbarang', JenisBarangController::class);
+    Route::resource('satuan', SatuanController::class);
+    Route::resource('manajemenuser', ManajemenUserController::class);
+    Route::resource('barangmasuk', BarangMasukController::class);
+    Route::resource('barangkeluar', BarangKeluarController::class);
+});
+
+Route::middleware(['auth', 'role:adminbarang'])->group(function () {
+    Route::resource('kelolabarang', KelolaBarangController::class)->except(['destroy']);
+    Route::resource('barangmasuk', BarangMasukController::class);
+    Route::resource('barangkeluar', BarangKeluarController::class);
+    // Laporan stok
+    Route::get('/laporan/stok', [App\Http\Controllers\LaporanController::class, 'stok'])->name('laporan.stok');
+});
+
+Route::middleware(['auth', 'role:kepalagudang'])->group(function () {
+    // Hanya akses laporan dan monitoring
+    Route::get('/laporan/stok', [App\Http\Controllers\LaporanController::class, 'stok'])->name('laporan.stok');
+    Route::get('/laporan/barangmasuk', [App\Http\Controllers\LaporanController::class, 'barangMasuk'])->name('laporan.barangmasuk');
+    Route::get('/laporan/barangkeluar', [App\Http\Controllers\LaporanController::class, 'barangKeluar'])->name('laporan.barangkeluar');
+});
+
+require __DIR__.'/auth.php';
