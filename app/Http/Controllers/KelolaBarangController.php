@@ -10,12 +10,12 @@ class KelolaBarangController extends Controller
     public function index()
     {
         $barangs = KelolaBarang::all();
-        return view('superadmin.kelolabarang.index', compact('barangs'));
+        return view('kelolabarang.index', compact('barangs'));
     }
 
     public function create()
     {
-        return view('superadmin.kelolabarang.create');
+        return view('kelolabarang.create');
     }
 
     public function store(Request $request)
@@ -29,10 +29,10 @@ class KelolaBarangController extends Controller
         return redirect()->route('kelolabarang.index')->with('success', 'Barang berhasil ditambahkan');
     }
 
-    public function edit($id)
+    public function edit($id)   
     {
         $barang = KelolaBarang::findOrFail($id);
-        return view('superadmin.kelolabarang.edit', compact('barang'));
+        return view('kelolabarang.edit', compact('barang'));
     }
 
     public function update(Request $request, $id)

@@ -10,12 +10,12 @@ class BarangMasukController extends Controller
     public function index()
     {
         $barangmasuks = BarangMasuk::all();
-        return view('superadmin.barangmasuk.index', compact('barangmasuks'));
+        return view('barangmasuk.index', compact('barangmasuks'));
     }
 
     public function create()
     {
-        return view('superadmin.barangmasuk.create');
+        return view('barangmasuk.create');
     }
 
     public function store(Request $request)
@@ -35,7 +35,7 @@ class BarangMasukController extends Controller
     public function edit($id)
     {
         $barangmasuk = BarangMasuk::findOrFail($id);
-        return view('superadmin.barangmasuk.edit', compact('barangmasuk'));
+        return view('barangmasuk.edit', compact('barangmasuk'));
     }
 
     public function update(Request $request, $id)

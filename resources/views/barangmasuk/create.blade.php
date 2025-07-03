@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <div class="container mt-4">
-        <form action="{{ route('barangmasuk.store') }}" method="POST">
+        <form action="{{ route('superadmin.barangmasuk.store') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="id_transaksi" class="form-label">ID Transaksi</label>

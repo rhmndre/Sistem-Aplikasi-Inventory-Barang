@@ -10,12 +10,12 @@ class SatuanController extends Controller
     public function index()
     {
         $satuans = Satuan::all();
-        return view('superadmin.satuan.index', compact('satuans'));
+        return view('satuan.index', compact('satuans'));
     }
 
     public function create()
     {
-        return view('superadmin.satuan.create');
+        return view('satuan.create');
     }
 
     public function store(Request $request)
@@ -30,7 +30,7 @@ class SatuanController extends Controller
     public function edit($id)
     {
         $satuan = Satuan::findOrFail($id);
-        return view('superadmin.satuan.edit', compact('satuan'));
+        return view('satuan.edit', compact('satuan'));
     }
 
     public function update(Request $request, $id)

@@ -10,12 +10,12 @@ class ManajemenUserController extends Controller
     public function index()
     {
         $users = ManajemenUser::all();
-        return view('superadmin.manajemenuser.index', compact('users'));
+        return view('manajemenuser.index', compact('users'));
     }
 
     public function create()
     {
-        return view('superadmin.manajemenuser.create');
+        return view('manajemenuser.create');
     }
 
     public function store(Request $request)
@@ -32,7 +32,7 @@ class ManajemenUserController extends Controller
     public function edit($id)
     {
         $user = ManajemenUser::findOrFail($id);
-        return view('superadmin.manajemenuser.edit', compact('user'));
+        return view('manajemenuser.edit', compact('user'));
     }
 
     public function update(Request $request, $id)

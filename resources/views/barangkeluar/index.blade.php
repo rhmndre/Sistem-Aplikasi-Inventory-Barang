@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <div class="container mt-4">
-        <a href="{{ route('barangkeluar.create') }}" class="btn btn-primary mb-3">Tambah Barang Keluar</a>
+        <a href="{{ route('superadmin.barangkeluar.create') }}" class="btn btn-primary mb-3">Tambah Barang Keluar</a>
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif

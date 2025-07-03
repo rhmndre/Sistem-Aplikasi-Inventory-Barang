@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>Tambah Satuan</h1>
-    <form action="{{ route('satuan.store') }}" method="POST">
+    <form action="{{ route('superadmin.satuan.store') }}" method="POST">
         @csrf
         <div class="mb-3">
             <label for="jenis_barang" class="form-label">Jenis Barang</label>
