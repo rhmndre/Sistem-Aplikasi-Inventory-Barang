@@ -29,7 +29,7 @@ class KelolaBarangController extends Controller
         return redirect()->route('kelolabarang.index')->with('success', 'Barang berhasil ditambahkan');
     }
 
-    public function edit($id)
+    public function edit($id)   
     {
         $barang = KelolaBarang::findOrFail($id);
         return view('superadmin.kelolabarang.edit', compact('barang'));
