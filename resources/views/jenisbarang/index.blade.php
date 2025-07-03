@@ -15,7 +15,7 @@
                 @endif
 
                 <div class="flex justify-between items-center mb-4">
-                    <a href="{{ route('jenisbarang.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm shadow">
+                    <a href="{{ route('superadmin.jenisbarang.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm shadow">
                         + Tambah Jenis Barang
                     </a>
                     <input type="text" placeholder="Cari..." class="border px-3 py-1 rounded-lg shadow text-sm w-1/3">

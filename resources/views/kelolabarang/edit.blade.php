@@ -8,7 +8,7 @@
     <div class="py-10">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 rounded shadow-md">
-                <form action="{{ route('kelolabarang.update', $barang->id_barang) }}" method="POST">
+                <form action="{{ route('superadmin.kelolabarang.update', $barang->id_barang) }}" method="POST">
                     @csrf
                     @method('PUT')
 

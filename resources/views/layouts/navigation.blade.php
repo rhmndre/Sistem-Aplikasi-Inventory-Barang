@@ -20,17 +20,17 @@
             <!-- Master -->
             <div class="mt-6 mb-2 text-xs font-bold text-gray-500 uppercase">Master</div>
 
-            <a href="{{ route('kelolabarang.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+            <a href="{{ route('superadmin.kelolabarang.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
                 <i class="fas fa-box w-5 h-5"></i>
                 Barang
             </a>
 
-            <a href="{{ route('jenisbarang.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+            <a href="{{ route('superadmin.jenisbarang.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
                 <i class="fas fa-tags w-5 h-5"></i>
                 Jenis Barang
             </a>
 
-            <a href="{{ route('satuan.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+            <a href="{{ route('superadmin.satuan.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
                 <i class="fas fa-balance-scale w-5 h-5"></i>
                 Satuan
             </a>
@@ -38,7 +38,7 @@
             <!-- Pengaturan -->
             <div class="mt-6 mb-2 text-xs font-bold text-gray-500 uppercase">Pengaturan</div>
 
-            <a href="{{ route('manajemenuser.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+            <a href="{{ route('superadmin.manajemenuser.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
                 <i class="fas fa-users-cog w-5 h-5"></i>
                 Manajemen User
             </a>
@@ -48,17 +48,17 @@
             <!-- Transaksi -->
             <div class="mt-6 mb-2 text-xs font-bold text-gray-500 uppercase">Transaksi</div>
 
-            <a href="{{ route('barangmasuk.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+            <a href="{{ route('superadmin.barangmasuk.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
                 <i class="fas fa-arrow-down w-5 h-5"></i>
                 Barang Masuk
             </a>
 
-            <a href="{{ route('barangkeluar.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+            <a href="{{ route('superadmin.barangkeluar.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
                 <i class="fas fa-arrow-up w-5 h-5"></i>
                 Barang Keluar
             </a>
         @endif
-
+        
         <!-- Laporan -->
         <div class="mt-6 mb-2 text-xs font-bold text-gray-500 uppercase">Laporan</div>
 
@@ -66,7 +66,8 @@
             <i class="fas fa-chart-line w-5 h-5"></i>
             Laporan Stok
         </a>
-
+        @if (Auth::user()->role === 'superadmin' || Auth::user()->role === 'kepalagudang')
+        
         <a href="{{ route('laporan.barangmasuk') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
             <i class="fas fa-file-import w-5 h-5"></i>
             Laporan Barang Masuk
@@ -76,6 +77,7 @@
             <i class="fas fa-file-export w-5 h-5"></i>
             Laporan Barang Keluar
         </a>
+        @endif
     </nav>
 
     <!-- Footer -->

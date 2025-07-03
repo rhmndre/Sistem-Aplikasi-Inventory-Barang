@@ -16,7 +16,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <a href="{{ route('kelolabarang.create') }}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                    <a href="{{ route('superadmin.kelolabarang.create') }}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
                         + Tambah Barang
                     </a>
                 </div>
@@ -41,11 +41,11 @@
                                 <td class="px-4 py-2 border">{{ $barang->stok }}</td>
                                 <td class="px-4 py-2 border">{{ $barang->satuan }}</td>
                                 <td class="px-4 py-2 border flex gap-2">
-                                    <a href="{{ route('kelolabarang.edit', $barang->id_barang) }}"
+                                    <a href="{{ route('superadmin.kelolabarang.edit', $barang->id_barang) }}"
                                        class="inline-flex items-center px-3 py-1 bg-yellow-400 text-white text-xs font-medium rounded hover:bg-yellow-500 transition">
                                         <i class="fas fa-edit mr-1"></i> Edit
                                     </a>
-                                    <form action="{{ route('kelolabarang.destroy', $barang->id_barang) }}" method="POST" onsubmit="return confirm('Yakin hapus?')">
+                                    <form action="{{ route('superadmin.kelolabarang.destroy', $barang->id_barang) }}" method="POST" onsubmit="return confirm('Yakin hapus?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"

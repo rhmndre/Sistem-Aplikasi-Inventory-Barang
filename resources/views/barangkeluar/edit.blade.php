@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <div class="container mt-4">
-        <form action="{{ route('barangkeluar.update', $barangkeluar->id) }}" method="POST">
+        <form action="{{ route('superadmin.barangkeluar.update', $barangkeluar->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-3">

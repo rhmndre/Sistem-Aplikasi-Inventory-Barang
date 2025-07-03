@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <div class="container mt-4">
-        <form action="{{ route('manajemenuser.update', $user->id) }}" method="POST">
+        <form action="{{ route('superadmin.manajemenuser.update', $user->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-3">
@@ -21,7 +21,7 @@
                 <input type="text" name="hak_akses" class="form-control" value="{{ $user->hak_akses }}" required>
             </div>
             <button type="submit" class="btn btn-success">Update</button>
-            <a href="{{ route('manajemenuser.index') }}" class="btn btn-secondary">Kembali</a>
+            <a href="{{ route('superadmin.manajemenuser.index') }}" class="btn btn-secondary">Kembali</a>
         </form>
     </div>
 </x-app-layout>

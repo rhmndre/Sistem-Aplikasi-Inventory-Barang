@@ -30,7 +30,7 @@ class SatuanController extends Controller
     public function edit($id)
     {
         $satuan = Satuan::findOrFail($id);
-        return view('superadmin.satuan.edit', compact('satuan'));
+        return view('satuan.edit', compact('satuan'));
     }
 
     public function update(Request $request, $id)

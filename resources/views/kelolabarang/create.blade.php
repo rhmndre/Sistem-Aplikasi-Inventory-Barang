@@ -8,7 +8,7 @@
     <div class="py-10">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 rounded shadow-md">
-                <form action="{{ route('kelolabarang.store') }}" method="POST">
+                <form action="{{ route('superadmin.kelolabarang.store') }}" method="POST">
                     @csrf
 
                     {{-- Nama Barang --}}
@@ -37,7 +37,7 @@
 
                     {{-- Tombol --}}
                     <div class="flex items-center justify-end gap-3">
-                        <a href="{{ route('kelolabarang.index') }}"
+                        <a href="{{ route('superadmin.kelolabarang.index') }}"
                             class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">
                             <i class="fas fa-arrow-left mr-1"></i> Kembali
                         </a>

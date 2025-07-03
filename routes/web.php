@@ -27,8 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'role:superadmin'])->group(function () {
-    Route::get('/superadmin', [DashboardController::class, 'index'])->name('superadmin.dashboard');
+Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/superadmin', [DashboardController::class, 'index'])->name('dashboard');
     
     Route::resource('kelolabarang', KelolaBarangController::class);
     Route::resource('jenisbarang', JenisBarangController::class);
@@ -39,7 +39,7 @@ Route::middleware(['auth', 'role:superadmin'])->group(function () {
 });
 
 
-Route::middleware(['auth', 'role:adminbarang'])->group(function () {
+Route::middleware(['auth', 'role:adminbarang'])->prefix('adminbarang')->name('adminbarang.')->group(function () {
     Route::resource('kelolabarang', KelolaBarangController::class)->except(['destroy']);
     Route::resource('barangmasuk', BarangMasukController::class);
     Route::resource('barangkeluar', BarangKeluarController::class);
@@ -47,7 +47,7 @@ Route::middleware(['auth', 'role:adminbarang'])->group(function () {
     Route::get('/laporan/stok', [App\Http\Controllers\LaporanController::class, 'stok'])->name('laporan.stok');
 });
 
-Route::middleware(['auth', 'role:kepalagudang'])->group(function () {
+Route::middleware(['auth', 'role:kepalagudang,superadmin'])->group(function () {
     // Hanya akses laporan dan monitoring
     Route::get('/laporan/stok', [App\Http\Controllers\LaporanController::class, 'stok'])->name('laporan.stok');
     Route::get('/laporan/barangmasuk', [App\Http\Controllers\LaporanController::class, 'barangMasuk'])->name('laporan.barangmasuk');
