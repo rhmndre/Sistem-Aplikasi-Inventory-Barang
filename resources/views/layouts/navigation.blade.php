@@ -17,19 +17,19 @@
             </a>
             @if(Auth::user()->role === 'superadmin')
                 <div class="mt-6 mb-2 text-xs font-bold text-gray-500 uppercase">Master</div>
-                <a href="{{ route('kelolabarang.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                <a href="{{ route('superadmin.kelolabarang.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     Barang
                 </a>
-                <a href="{{ route('jenisbarang.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Jenis Barang</a>
-                <a href="{{ route('satuan.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Satuan</a>
+                <a href="{{ route('superadmin.jenisbarang.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Jenis Barang</a>
+                <a href="{{ route('superadmin.satuan.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Satuan</a>
                 <div class="mt-6 mb-2 text-xs font-bold text-gray-500 uppercase">Pengaturan</div>
-                <a href="{{ route('manajemenuser.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Manajemen User</a>
+                <a href="{{ route('superadmin.manajemenuser.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Manajemen User</a>
             @endif
             @if(Auth::user()->role === 'superadmin' || Auth::user()->role === 'adminbarang')
                 <div class="mt-6 mb-2 text-xs font-bold text-gray-500 uppercase">Transaksi</div>
-                <a href="{{ route('barangmasuk.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Barang Masuk</a>
-                <a href="{{ route('barangkeluar.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Barang Keluar</a>
+                <a href="{{ route('superadmin.barangmasuk.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Barang Masuk</a>
+                <a href="{{ route('superadmin.barangkeluar.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Barang Keluar</a>
             @endif
             <div class="mt-6 mb-2 text-xs font-bold text-gray-500 uppercase">Laporan</div>
             <a href="{{ route('laporan.stok') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Laporan Stok</a>

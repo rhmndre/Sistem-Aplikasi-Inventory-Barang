@@ -27,10 +27,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'role:superadmin'])->group(function () {
-    Route::get('/superadmin', [DashboardController::class, 'index'])->name('superadmin.dashboard');
+Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/superadmin', [DashboardController::class, 'index'])->name('dashboard');
     
     Route::resource('kelolabarang', KelolaBarangController::class);
+    // Note: The route name is now 'superadmin.kelolabarang.index', not 'kelolabarang.index'
     Route::resource('jenisbarang', JenisBarangController::class);
     Route::resource('satuan', SatuanController::class);
     Route::resource('manajemenuser', ManajemenUserController::class);
@@ -39,7 +40,7 @@ Route::middleware(['auth', 'role:superadmin'])->group(function () {
 });
 
 
-Route::middleware(['auth', 'role:adminbarang'])->group(function () {
+Route::middleware(['auth', 'role:adminbarang'])->prefix('adminbarang')->name('adminbarang.')->group(function () {
     Route::resource('kelolabarang', KelolaBarangController::class)->except(['destroy']);
     Route::resource('barangmasuk', BarangMasukController::class);
     Route::resource('barangkeluar', BarangKeluarController::class);
