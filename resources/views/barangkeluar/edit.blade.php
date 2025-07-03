@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <div class="container mt-4">
-        <form action="{{ route('superadmin.barangkeluar.update', $barangkeluar->id) }}" method="POST">
+        <form action="{{ route('adminbarang.barangkeluar.update', $barangkeluar->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-3">
@@ -33,7 +33,7 @@
                 <input type="text" name="satuan" class="form-control" value="{{ $barangkeluar->satuan }}" required>
             </div>
             <button type="submit" class="btn btn-success">Update</button>
-            <a href="{{ route('barangkeluar.index') }}" class="btn btn-secondary">Kembali</a>
+            <a href="{{ route('adminbarang.barangkeluar.index') }}" class="btn btn-secondary">Kembali</a>
         </form>
     </div>
 </x-app-layout>

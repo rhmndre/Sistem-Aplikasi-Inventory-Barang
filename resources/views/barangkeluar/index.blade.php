@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <div class="container mt-4">
-        <a href="{{ route('superadmin.barangkeluar.create') }}" class="btn btn-primary mb-3">Tambah Barang Keluar</a>
+        <a href="{{ route('adminbarang.barangkeluar.create') }}" class="btn btn-primary mb-3">Tambah Barang Keluar</a>
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
@@ -33,8 +33,8 @@
                     <td>{{ $barangkeluar->jumlah_keluar }}</td>
                     <td>{{ $barangkeluar->satuan }}</td>
                     <td>
-                        <a href="{{ route('barangkeluar.edit', $barangkeluar->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('barangkeluar.destroy', $barangkeluar->id) }}" method="POST" style="display:inline-block;">
+                        <a href="{{ route('adminbarang.barangkeluar.edit', $barangkeluar->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="{{ route('adminbarang.barangkeluar.destroy', $barangkeluar->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin hapus?')">Hapus</button>

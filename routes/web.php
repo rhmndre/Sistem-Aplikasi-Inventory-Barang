@@ -30,26 +30,25 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/superadmin', [DashboardController::class, 'index'])->name('dashboard');
     
-    Route::resource('kelolabarang', KelolaBarangController::class);
     Route::resource('jenisbarang', JenisBarangController::class);
     Route::resource('satuan', SatuanController::class);
     Route::resource('manajemenuser', ManajemenUserController::class);
-    Route::resource('barangmasuk', BarangMasukController::class);
-    Route::resource('barangkeluar', BarangKeluarController::class);
 });
 
 
-Route::middleware(['auth', 'role:adminbarang'])->prefix('adminbarang')->name('adminbarang.')->group(function () {
+Route::middleware(['auth', 'role:adminbarang,superadmin'])->prefix('adminbarang')->name('adminbarang.')->group(function () {
     Route::resource('kelolabarang', KelolaBarangController::class)->except(['destroy']);
     Route::resource('barangmasuk', BarangMasukController::class);
     Route::resource('barangkeluar', BarangKeluarController::class);
     // Laporan stok
+});
+
+Route::middleware(['auth', 'role:superadmin,adminbarang,kepalagudang'])->group(function () {
     Route::get('/laporan/stok', [App\Http\Controllers\LaporanController::class, 'stok'])->name('laporan.stok');
 });
 
 Route::middleware(['auth', 'role:kepalagudang,superadmin'])->group(function () {
     // Hanya akses laporan dan monitoring
-    Route::get('/laporan/stok', [App\Http\Controllers\LaporanController::class, 'stok'])->name('laporan.stok');
     Route::get('/laporan/barangmasuk', [App\Http\Controllers\LaporanController::class, 'barangMasuk'])->name('laporan.barangmasuk');
     Route::get('/laporan/barangkeluar', [App\Http\Controllers\LaporanController::class, 'barangKeluar'])->name('laporan.barangkeluar');
 });
