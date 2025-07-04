@@ -10,6 +10,7 @@ use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\BarangKeluarController;
 use App\Http\Controllers\KelolaBarangController;
 use App\Http\Controllers\ManajemenUserController;
+use App\Http\Controllers\LaporanController;
 
 Route::get('/', function () {
     return Redirect::route('login');
@@ -40,17 +41,24 @@ Route::middleware(['auth', 'role:adminbarang,superadmin'])->prefix('adminbarang'
     Route::resource('kelolabarang', KelolaBarangController::class)->except(['destroy']);
     Route::resource('barangmasuk', BarangMasukController::class);
     Route::resource('barangkeluar', BarangKeluarController::class);
-    // Laporan stok
 });
 
+// Laporan Routes - accessible by all three roles with different views
 Route::middleware(['auth', 'role:superadmin,adminbarang,kepalagudang'])->group(function () {
-    Route::get('/laporan/stok', [App\Http\Controllers\LaporanController::class, 'stok'])->name('laporan.stok');
-});
-
-Route::middleware(['auth', 'role:kepalagudang,superadmin'])->group(function () {
-    // Hanya akses laporan dan monitoring
-    Route::get('/laporan/barangmasuk', [App\Http\Controllers\LaporanController::class, 'barangMasuk'])->name('laporan.barangmasuk');
-    Route::get('/laporan/barangkeluar', [App\Http\Controllers\LaporanController::class, 'barangKeluar'])->name('laporan.barangkeluar');
+    // Laporan Stok
+    Route::get('/laporan/stok', [LaporanController::class, 'stok'])->name('laporan.stok');
+    
+    // Laporan Barang Masuk - accessible by all three roles
+    Route::get('/laporan/barangmasuk', [LaporanController::class, 'barangMasuk'])->name('laporan.barangmasuk');
+    
+    // Export Laporan Barang Masuk
+    Route::get('/laporan/barangmasuk/export', [LaporanController::class, 'exportBarangMasuk'])->name('laporan.barangmasuk.export');
+    
+    // API untuk chart data
+    Route::get('/laporan/barangmasuk/chart-data', [LaporanController::class, 'getChartData'])->name('laporan.barangmasuk.chart');
+    
+    // Laporan Barang Keluar
+    Route::get('/laporan/barangkeluar', [LaporanController::class, 'barangKeluar'])->name('laporan.barangkeluar');
 });
 
 require __DIR__.'/auth.php';
