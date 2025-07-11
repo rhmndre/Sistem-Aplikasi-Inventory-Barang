@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\BarangKeluar;
+use App\Models\KelolaBarang;
+use App\Models\Satuan;
 use Illuminate\Http\Request;
 
 class BarangKeluarController extends Controller
@@ -15,7 +17,9 @@ class BarangKeluarController extends Controller
 
     public function create()
     {
-        return view('barangkeluar.create');
+        $kelolabarangs = KelolaBarang::all();
+        $satuans = Satuan::all();
+        return view('barangkeluar.create', compact('kelolabarangs', 'satuans'));
     }
 
     public function store(Request $request)
@@ -24,7 +28,6 @@ class BarangKeluarController extends Controller
             'id_transaksi' => 'required|string|unique:barang_keluars,id_transaksi',
             'tanggal' => 'required|date',
             'barang' => 'required|string',
-            'jumlah_barang' => 'required|integer',
             'jumlah_keluar' => 'required|integer',
             'satuan' => 'required|string',
         ]);
@@ -44,7 +47,6 @@ class BarangKeluarController extends Controller
             'id_transaksi' => 'required|string|unique:barang_keluars,id_transaksi,' . $id,
             'tanggal' => 'required|date',
             'barang' => 'required|string',
-            'jumlah_barang' => 'required|integer',
             'jumlah_keluar' => 'required|integer',
             'satuan' => 'required|string',
         ]);

@@ -13,7 +13,6 @@ class BarangKeluar extends Model
         'id_transaksi',
         'tanggal',
         'barang',
-        'jumlah_barang',
         'jumlah_keluar',
         'satuan',
     ];

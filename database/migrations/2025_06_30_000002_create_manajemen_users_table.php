@@ -11,8 +11,10 @@ return new class extends Migration
         Schema::create('manajemen_users', function (Blueprint $table) {
             $table->id();
             $table->string('nama_user');
-            $table->string('username')->unique();
-            $table->string('hak_akses');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->enum('hak_akses', ['superadmin', 'admin_barang', 'kepala_gudang']);
+            $table->rememberToken();
             $table->timestamps();
         });
     }

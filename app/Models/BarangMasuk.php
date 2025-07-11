@@ -13,8 +13,12 @@ class BarangMasuk extends Model
         'id_transaksi',
         'tanggal',
         'barang',
-        'jumlah_barang',
         'jumlah_masuk',
         'satuan',
     ];
+
+    public function kelolaBarang()
+    {
+        return $this->belongsTo(KelolaBarang::class, 'barang', 'nama_barang');
+    }
 }

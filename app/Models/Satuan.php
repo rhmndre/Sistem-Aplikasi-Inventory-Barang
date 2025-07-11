@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Satuan extends Model
 {
-    use HasFactory;
+    protected $fillable = ['nama_satuan'];
 
-    protected $fillable = [
-        'jenis_barang',
-    ];
+    public function kelolaBarangs()
+    {
+        return $this->hasMany(KelolaBarang::class, 'satuan', 'nama_satuan');
+    }
 }

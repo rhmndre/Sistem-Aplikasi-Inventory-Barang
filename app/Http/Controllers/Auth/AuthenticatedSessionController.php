@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,12 +29,19 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Redirect sesuai role
         $user = Auth::user();
-        if ($user && $user->role === 'superadmin') {
-            return redirect()->intended(route('superadmin.dashboard', absolute: false));
+        
+        // Redirect based on user role
+        switch($user->hak_akses) {
+            case 'superadmin':
+                return redirect()->intended(route('superadmin.dashboard'));
+            case 'admin_barang':
+                return redirect()->intended(route('adminbarang.kelolabarang.index'));
+            case 'kepala_gudang':
+                return redirect()->intended(route('dashboard'));
+            default:
+                return redirect()->intended(RouteServiceProvider::HOME);
         }
-        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**

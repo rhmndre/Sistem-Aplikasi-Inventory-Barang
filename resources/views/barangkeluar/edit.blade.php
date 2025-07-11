@@ -21,10 +21,6 @@
                 <input type="text" name="barang" class="form-control" value="{{ $barangkeluar->barang }}" required>
             </div>
             <div class="mb-3">
-                <label for="jumlah_barang" class="form-label">Jumlah Barang</label>
-                <input type="number" name="jumlah_barang" class="form-control" value="{{ $barangkeluar->jumlah_barang }}" required>
-            </div>
-            <div class="mb-3">
                 <label for="jumlah_keluar" class="form-label">Jumlah Keluar</label>
                 <input type="number" name="jumlah_keluar" class="form-control" value="{{ $barangkeluar->jumlah_keluar }}" required>
             </div>

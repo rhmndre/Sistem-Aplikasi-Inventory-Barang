@@ -21,10 +21,11 @@ class SatuanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'jenis_barang' => 'required|string|max:255',
+            'nama_satuan' => 'required|string|max:255',
         ]);
+        
         Satuan::create($request->all());
-        return redirect()->route('satuan.index')->with('success', 'Data satuan berhasil ditambahkan!');
+        return redirect()->route('adminbarang.satuan.index')->with('success', 'Data satuan berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -36,17 +37,18 @@ class SatuanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'jenis_barang' => 'required|string|max:255',
+            'nama_satuan' => 'required|string|max:255',
         ]);
+        
         $satuan = Satuan::findOrFail($id);
         $satuan->update($request->all());
-        return redirect()->route('satuan.index')->with('success', 'Data satuan berhasil diupdate!');
+        return redirect()->route('adminbarang.satuan.index')->with('success', 'Data satuan berhasil diupdate!');
     }
 
     public function destroy($id)
     {
         $satuan = Satuan::findOrFail($id);
         $satuan->delete();
-        return redirect()->route('satuan.index')->with('success', 'Data satuan berhasil dihapus!');
+        return redirect()->route('adminbarang.satuan.index')->with('success', 'Data satuan berhasil dihapus!');
     }
 }

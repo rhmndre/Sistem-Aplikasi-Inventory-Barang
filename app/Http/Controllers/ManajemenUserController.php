@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ManajemenUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ManajemenUserController extends Controller
 {
@@ -22,11 +23,20 @@ class ManajemenUserController extends Controller
     {
         $request->validate([
             'nama_user' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:manajemen_users,username',
-            'hak_akses' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:manajemen_users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'hak_akses' => 'required|string|in:superadmin,admin_barang,kepala_gudang',
         ]);
-        ManajemenUser::create($request->all());
-        return redirect()->route('manajemenuser.index')->with('success', 'User berhasil ditambahkan!');
+
+        ManajemenUser::create([
+            'nama_user' => $request->nama_user,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'hak_akses' => $request->hak_akses,
+        ]);
+
+        return redirect()->route('superadmin.manajemenuser.index')
+            ->with('success', 'User berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -39,18 +49,34 @@ class ManajemenUserController extends Controller
     {
         $request->validate([
             'nama_user' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:manajemen_users,username,' . $id,
-            'hak_akses' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:manajemen_users,email,' . $id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'hak_akses' => 'required|string|in:superadmin,admin_barang,kepala_gudang',
         ]);
+
         $user = ManajemenUser::findOrFail($id);
-        $user->update($request->all());
-        return redirect()->route('manajemenuser.index')->with('success', 'User berhasil diupdate!');
+        
+        $data = [
+            'nama_user' => $request->nama_user,
+            'email' => $request->email,
+            'hak_akses' => $request->hak_akses,
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('superadmin.manajemenuser.index')
+            ->with('success', 'User berhasil diupdate!');
     }
 
     public function destroy($id)
     {
         $user = ManajemenUser::findOrFail($id);
         $user->delete();
-        return redirect()->route('manajemenuser.index')->with('success', 'User berhasil dihapus!');
+        return redirect()->route('superadmin.manajemenuser.index')
+            ->with('success', 'User berhasil dihapus!');
     }
 }

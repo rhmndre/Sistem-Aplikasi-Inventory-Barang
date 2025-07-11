@@ -1,57 +1,72 @@
 <x-app-layout>
     <x-slot name="header">
+        <div class="flex justify-between items-center">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Data Jenis Barang
         </h2>
+            <a href="{{ route('adminbarang.jenisbarang.create') }}" 
+               class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                <span>Tambah Jenis Barang</span>
+            </a>
+        </div>
     </x-slot>
 
-    <div class="py-10">
+    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow-md rounded-lg p-6">
-                @if(session('success'))
-                    <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                <div class="flex justify-between items-center mb-4">
-                    <a href="{{ route('superadmin.jenisbarang.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm shadow">
-                        + Tambah Jenis Barang
-                    </a>
-                    <input type="text" placeholder="Cari..." class="border px-3 py-1 rounded-lg shadow text-sm w-1/3">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <div class="mb-4 flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-gray-600">Show</span>
+                            <select id="per-page" class="border border-gray-300 rounded-md text-gray-600 px-2 py-1">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span class="text-gray-600">entries</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-gray-600">Search:</span>
+                            <input type="text" id="search" class="border border-gray-300 rounded-md px-3 py-1">
+                        </div>
                 </div>
 
                 <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border border-gray-200 rounded shadow-sm">
-                        <thead class="bg-purple-100 text-gray-700 text-sm uppercase tracking-wide">
-                            <tr>
-                                <th class="px-4 py-3 border">No.</th>
-                                <th class="px-4 py-3 border">Jenis Barang</th>
-                                <th class="px-4 py-3 border">Aksi</th>
+                    <table class="min-w-full bg-white border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                    <th class="px-6 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                                <th class="px-6 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Barang</th>
+                                <th class="px-6 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Keterangan</th>
+                                <th class="px-6 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="text-gray-700">
+                            <tbody class="divide-y divide-gray-300">
                             @foreach($jenisBarangs as $index => $jenis)
-                                <tr class="hover:bg-gray-50 transition">
-                                    <td class="px-4 py-3 border text-center">{{ $index + 1 }}</td>
-                                    <td class="px-4 py-3 border">{{ $jenis->jenis_barang }}</td>
-                                    <td class="px-4 py-3 border text-center space-x-2">
-                                        <a href="{{ route('jenisbarang.show', $jenis->id) }}" class="inline-flex items-center justify-center w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-full" title="Detail">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0A9 9 0 1112 3a9 9 0 019 9z"/>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $index + 1 }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $jenis->nama_jenis }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $jenis->keterangan }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 flex">
+                                        <a href="{{ route('adminbarang.jenisbarang.edit', $jenis->id) }}" 
+                                           class="text-purple-600 hover:text-purple-900">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                             </svg>
                                         </a>
-                                        <a href="{{ route('jenisbarang.edit', $jenis->id) }}" class="inline-flex items-center justify-center w-8 h-8 bg-purple-500 hover:bg-purple-600 text-white rounded-full" title="Edit">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5m-5.586-6.414a2 2 0 112.828 2.828L11 17H7v-4l8.586-8.586z"/>
-                                            </svg>
-                                        </a>
-                                        <form action="{{ route('jenisbarang.destroy', $jenis->id) }}" method="POST" class="inline">
+                                        <form action="{{ route('adminbarang.jenisbarang.destroy', $jenis->id) }}" 
+                                              method="POST" 
+                                              class="inline"
+                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus jenis barang ini?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Yakin ingin menghapus?')" class="inline-flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full" title="Hapus">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                            <button type="submit" class="text-red-600 hover:text-red-900">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                                                 </svg>
                                             </button>
                                         </form>
@@ -60,9 +75,12 @@
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
 
-                    @if(count($jenisBarangs) == 0)
-                        <div class="p-4 text-center text-gray-500">Data belum tersedia.</div>
+                    @if(session('success'))
+                    <div class="mt-4 p-4 bg-green-100 text-green-700 rounded-md">
+                        {{ session('success') }}
+                    </div>
                     @endif
                 </div>
             </div>

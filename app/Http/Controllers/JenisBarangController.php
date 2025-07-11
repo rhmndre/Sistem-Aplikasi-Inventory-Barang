@@ -21,10 +21,16 @@ class JenisBarangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'jenis_barang' => 'required|string|max:255',
+            'nama_jenis' => 'required|string|max:255|unique:jenis_barangs',
         ]);
-        JenisBarang::create($request->only('jenis_barang'));
-        return redirect()->route('jenisbarang.index')->with('success', 'Jenis barang berhasil ditambahkan.');
+        
+        JenisBarang::create($request->only('nama_jenis'));
+        return redirect()->route('adminbarang.jenisbarang.index')->with('success', 'Jenis barang berhasil ditambahkan.');
+    }
+
+    public function show(JenisBarang $jenisbarang)
+    {
+        return view('jenisbarang.show', compact('jenisbarang'));
     }
 
     public function edit(JenisBarang $jenisbarang)
@@ -35,15 +41,16 @@ class JenisBarangController extends Controller
     public function update(Request $request, JenisBarang $jenisbarang)
     {
         $request->validate([
-            'jenis_barang' => 'required|string|max:255',
+            'nama_jenis' => 'required|string|max:255|unique:jenis_barangs,nama_jenis,'.$jenisbarang->id,
         ]);
-        $jenisbarang->update($request->only('jenis_barang'));
-        return redirect()->route('jenisbarang.index')->with('success', 'Jenis barang berhasil diupdate.');
+        
+        $jenisbarang->update($request->only('nama_jenis'));
+        return redirect()->route('adminbarang.jenisbarang.index')->with('success', 'Jenis barang berhasil diupdate.');
     }
 
     public function destroy(JenisBarang $jenisbarang)
     {
         $jenisbarang->delete();
-        return redirect()->route('jenisbarang.index')->with('success', 'Jenis barang berhasil dihapus.');
+        return redirect()->route('adminbarang.jenisbarang.index')->with('success', 'Jenis barang berhasil dihapus.');
     }
 }

@@ -13,7 +13,6 @@ return new class extends Migration
             $table->string('id_transaksi')->unique();
             $table->date('tanggal');
             $table->string('barang');
-            $table->integer('jumlah_barang');
             $table->integer('jumlah_masuk');
             $table->string('satuan');
             $table->timestamps();
