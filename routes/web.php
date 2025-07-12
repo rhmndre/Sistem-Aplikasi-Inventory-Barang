@@ -38,6 +38,11 @@ Route::middleware(['auth', 'role:adminbarang,superadmin'])->name('adminbarang.')
     Route::post('/barangmasuk/import', [BarangMasukController::class, 'import'])->name('barangmasuk.import.store');
     Route::get('/barangmasuk/template', [BarangMasukController::class, 'downloadTemplate'])->name('barangmasuk.template');
 
+    // Barang Keluar Import Routes
+    Route::get('/barangkeluar/import', [BarangKeluarController::class, 'importForm'])->name('barangkeluar.import');
+    Route::post('/barangkeluar/import', [BarangKeluarController::class, 'import'])->name('barangkeluar.import.store');
+    Route::get('/barangkeluar/template', [BarangKeluarController::class, 'downloadTemplate'])->name('barangkeluar.template');
+
     // Resource routes
     Route::resource('kelolabarang', KelolaBarangController::class);
     Route::get('kelolabarang/foto/{id}', [KelolaBarangController::class, 'showFoto'])->name('kelolabarang.foto');

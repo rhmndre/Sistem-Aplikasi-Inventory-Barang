@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Exception;
 
 class BarangMasukController extends Controller
 {
@@ -21,7 +22,7 @@ class BarangMasukController extends Controller
 
     public function create()
     {
-        // Generate ID Transaksi otomatis
+        // Generate ID Transaksi secara otomatis
         $lastTransaction = BarangMasuk::orderBy('id_transaksi', 'desc')->first();
         $prefix = 'TRX-BM-' . date('Ymd');
         
@@ -48,12 +49,25 @@ class BarangMasukController extends Controller
             'items.*.barang' => 'required|string|exists:kelola_barangs,nama_barang',
             'items.*.jumlah_masuk' => 'required|integer|min:1',
             'items.*.satuan' => 'required|string|exists:satuans,nama_satuan',
+        ], [
+            'id_transaksi.required' => 'ID Transaksi wajib diisi.',
+            'id_transaksi.unique' => 'ID Transaksi sudah digunakan.',
+            'tanggal.required' => 'Tanggal wajib diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
+            'items.required' => 'Minimal satu barang harus diinput.',
+            'items.*.barang.required' => 'Nama barang wajib diisi.',
+            'items.*.barang.exists' => 'Nama barang tidak ditemukan.',
+            'items.*.jumlah_masuk.required' => 'Jumlah masuk wajib diisi.',
+            'items.*.jumlah_masuk.integer' => 'Jumlah masuk harus berupa angka.',
+            'items.*.jumlah_masuk.min' => 'Jumlah masuk minimal 1.',
+            'items.*.satuan.required' => 'Satuan wajib diisi.',
+            'items.*.satuan.exists' => 'Satuan tidak ditemukan.',
         ]);
 
         try {
             DB::beginTransaction();
 
-            // Format: TRX-BM-YYYYMMDD0001
+            // Format: TRX-BM-YYYYMMDD0001 (format ID Transaksi)
             if (!str_starts_with($request->id_transaksi, 'TRX-BM-')) {
                 $prefix = 'TRX-BM-' . date('Ymd');
                 $lastTransaction = BarangMasuk::where('id_transaksi', 'like', $prefix . '%')
@@ -80,7 +94,7 @@ class BarangMasukController extends Controller
                     'satuan' => $item['satuan'],
                 ]);
 
-                // Update stok di kelola_barang
+                // Update stok pada kelola_barang
                 $kelolaBarang = KelolaBarang::where('nama_barang', $item['barang'])->first();
                 if ($kelolaBarang) {
                     $kelolaBarang->stok += $item['jumlah_masuk'];
@@ -116,6 +130,15 @@ class BarangMasukController extends Controller
             'barang' => 'required|string',
             'jumlah_masuk' => 'required|integer',
             'satuan' => 'required|string',
+        ], [
+            'id_transaksi.required' => 'ID Transaksi wajib diisi.',
+            'id_transaksi.unique' => 'ID Transaksi sudah digunakan.',
+            'tanggal.required' => 'Tanggal wajib diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
+            'barang.required' => 'Nama barang wajib diisi.',
+            'jumlah_masuk.required' => 'Jumlah masuk wajib diisi.',
+            'jumlah_masuk.integer' => 'Jumlah masuk harus berupa angka.',
+            'satuan.required' => 'Satuan wajib diisi.',
         ]);
 
         try {
@@ -123,14 +146,14 @@ class BarangMasukController extends Controller
 
         $barangmasuk = BarangMasuk::findOrFail($id);
             
-            // Rollback stok lama
+            // Kembalikan stok lama
             $kelolaBarangLama = KelolaBarang::where('nama_barang', $barangmasuk->barang)->first();
             if ($kelolaBarangLama) {
                 $kelolaBarangLama->stok -= $barangmasuk->jumlah_masuk;
                 $kelolaBarangLama->save();
             }
 
-            // Update barang masuk
+            // Update data barang masuk
         $barangmasuk->update($request->all());
 
             // Update stok baru
@@ -159,7 +182,7 @@ class BarangMasukController extends Controller
 
             $barangmasuk = BarangMasuk::findOrFail($id);
             
-            // Rollback stok
+            // Kembalikan stok
             $kelolaBarang = KelolaBarang::where('nama_barang', $barangmasuk->barang)->first();
             if ($kelolaBarang) {
                 $kelolaBarang->stok -= $barangmasuk->jumlah_masuk;
@@ -184,12 +207,12 @@ class BarangMasukController extends Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        // Set headers
+        // Set judul kolom
         $sheet->setCellValue('A1', 'Nama Barang');
         $sheet->setCellValue('B1', 'Jumlah Masuk');
         $sheet->setCellValue('C1', 'Satuan');
 
-        // Add example data
+        // Contoh data
         $sheet->setCellValue('A2', 'Pupuk NPK');
         $sheet->setCellValue('B2', '20');
         $sheet->setCellValue('C2', 'Kg');
@@ -198,20 +221,20 @@ class BarangMasukController extends Controller
         $sheet->setCellValue('B3', '15');
         $sheet->setCellValue('C3', 'Kg');
 
-        // Auto size columns
+        // Otomatis atur lebar kolom
         foreach(range('A','C') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
         }
 
-        // Create writer
-        $writer = new Xlsx($spreadsheet);
+        // Buat writer
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 
-        // Set headers for download
+        // Set header untuk download
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="template_barang_masuk.xlsx"');
         header('Cache-Control: max-age=0');
 
-        // Save to PHP output
+        // Simpan ke output PHP
         $writer->save('php://output');
         exit;
     }
@@ -225,6 +248,10 @@ class BarangMasukController extends Controller
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,xls|max:2048',
+        ], [
+            'file.required' => 'File wajib diunggah.',
+            'file.mimes' => 'File harus berupa file Excel (.xlsx atau .xls).',
+            'file.max' => 'Ukuran file maksimal 2MB.',
         ]);
 
         try {
@@ -235,10 +262,10 @@ class BarangMasukController extends Controller
             $worksheet = $spreadsheet->getActiveSheet();
             $rows = $worksheet->toArray();
 
-            // Skip header row
+            // Lewati baris header
             array_shift($rows);
 
-            // Generate ID Transaksi
+            // Generate ID Transaksi otomatis
             $prefix = 'TRX-BM-' . date('Ymd');
             $lastTransaction = BarangMasuk::where('id_transaksi', 'like', $prefix . '%')
                 ->orderBy('id_transaksi', 'desc')
@@ -257,14 +284,14 @@ class BarangMasukController extends Controller
             $successCount = 0;
 
             foreach ($rows as $index => $row) {
-                // Skip empty rows
+                // Lewati baris kosong
                 if (empty($row[0])) continue;
 
                 $namaBarang = trim($row[0]);
                 $jumlahMasuk = (int)$row[1];
                 $satuan = trim($row[2]);
 
-                // Validate data
+                // Validasi data
                 $kelolaBarang = KelolaBarang::where('nama_barang', $namaBarang)->first();
                 $satuanExists = Satuan::where('nama_satuan', $satuan)->first();
 
@@ -283,7 +310,7 @@ class BarangMasukController extends Controller
                     continue;
                 }
 
-                // Create barang masuk
+                // Buat data barang masuk
                 BarangMasuk::create([
                     'id_transaksi' => $idTransaksi,
                     'tanggal' => date('Y-m-d'),
@@ -292,7 +319,7 @@ class BarangMasukController extends Controller
                     'satuan' => $satuan,
                 ]);
 
-                // Update stok
+                // Update stok barang
                 $kelolaBarang->stok += $jumlahMasuk;
                 $kelolaBarang->save();
 
@@ -303,17 +330,17 @@ class BarangMasukController extends Controller
 
             if (count($errors) > 0) {
                 return redirect()->route('adminbarang.barangmasuk.import')
-                    ->with('warning', "Berhasil import $successCount data. Terdapat " . count($errors) . " error:")
+                    ->with('warning', "Berhasil mengimpor $successCount data. Terdapat " . count($errors) . " error:")
                     ->with('import_errors', $errors);
             }
 
             return redirect()->route('adminbarang.barangmasuk.index')
-                ->with('success', "Berhasil import $successCount data barang masuk!");
+                ->with('success', "Berhasil mengimpor $successCount data barang masuk!");
 
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()
-                ->with('error', 'Terjadi kesalahan saat import data: ' . $e->getMessage())
+                ->with('error', 'Terjadi kesalahan saat mengimpor data: ' . $e->getMessage())
                 ->withInput();
         }
     }

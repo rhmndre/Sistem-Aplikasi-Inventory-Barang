@@ -13,6 +13,7 @@ class BarangMasuk extends Model
         'id_transaksi',
         'tanggal',
         'barang',
+        'nama_barang',
         'jumlah_masuk',
         'satuan',
     ];

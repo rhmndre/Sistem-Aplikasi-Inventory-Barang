@@ -4,6 +4,10 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Barang Keluar') }}
         </h2>
+        <div class="flex gap-4">
+            <a href="{{ route('adminbarang.barangkeluar.import') }}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+                Import Excel
+            </a>
             <a href="{{ route('adminbarang.barangkeluar.create') }}" 
                class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -11,6 +15,7 @@
                 </svg>
                 <span>Tambah Barang Keluar</span>
             </a>
+        </div>
         </div>
     </x-slot>
 
