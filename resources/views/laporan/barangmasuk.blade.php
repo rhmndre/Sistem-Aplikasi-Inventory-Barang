@@ -59,7 +59,7 @@
                                         <td class="px-4 py-2 border text-center">{{ date('d/m/Y', strtotime($barang->tanggal)) }}</td>
                                         <td class="px-4 py-2 border">{{ $barang->kelolaBarang->nama_barang }}</td>
                                         <td class="px-4 py-2 border text-center">{{ $barang->jumlah }}</td>
-                                        <td class="px-4 py-2 border text-center">{{ $barang->kelolaBarang->satuanBarang->nama_satuan ?? '-' }}</td>
+                                        <td class="px-4 py-2 border text-center">{{ $barang->kelolaBarang->satuanBarang->nama_satuan }}</td> /// ini diganti ya ndre
                                         <td class="px-4 py-2 border">{{ $barang->keterangan }}</td>
                                     </tr>
                                 @endforeach
