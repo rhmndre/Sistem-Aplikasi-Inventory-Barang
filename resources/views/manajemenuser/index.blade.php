@@ -52,7 +52,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $index + 1 }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $user->nama_user }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $user->email }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $user->hak_akses }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $user->role }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 flex">
                                         <a href="{{ route('superadmin.manajemenuser.edit', $user->id) }}" 
                                            class="text-purple-600 hover:text-purple-900">

@@ -10,10 +10,15 @@ class BarangKeluar extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_transaksi',
-        'tanggal',
-        'barang',
-        'jumlah_keluar',
-        'satuan',
+        "id_transaksi",
+        "tanggal",
+        "barang",
+        "jumlah_keluar",
+        "satuan",
     ];
+
+    public function kelolaBarang()
+    {
+        return $this->belongsTo(KelolaBarang::class, "barang", "nama_barang");
+    }
 }

@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Edit User') }}
             </h2>
-            <a href="{{ route('superadmin.manajemenuser.index') }}" 
+            <a href="{{ route('superadmin.manajemenuser.index') }}"
                class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 flex items-center space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
@@ -21,12 +21,12 @@
                     <form action="{{ route('superadmin.manajemenuser.update', $user->id) }}" method="POST" class="space-y-6">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Nama User -->
                             <div>
                                 <label for="nama_user" class="block text-sm font-medium text-gray-700">Nama User</label>
-                                <input type="text" name="nama_user" id="nama_user" 
+                                <input type="text" name="nama_user" id="nama_user"
                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                                        value="{{ $user->nama_user }}"
                                        required>
@@ -38,7 +38,7 @@
                             <!-- Email -->
                             <div>
                                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                                <input type="email" name="email" id="email" 
+                                <input type="email" name="email" id="email"
                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                                        value="{{ $user->email }}"
                                        required>
@@ -51,9 +51,9 @@
                             <div>
                                 <label for="password" class="block text-sm font-medium text-gray-700">Password (Kosongkan jika tidak ingin mengubah)</label>
                                 <div class="relative">
-                                    <input type="password" name="password" id="password" 
+                                    <input type="password" name="password" id="password"
                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
-                                    <button type="button" onclick="togglePassword('password')" 
+                                    <button type="button" onclick="togglePassword('password')"
                                             class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -70,9 +70,9 @@
                             <div>
                                 <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
                                 <div class="relative">
-                                    <input type="password" name="password_confirmation" id="password_confirmation" 
+                                    <input type="password" name="password_confirmation" id="password_confirmation"
                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
-                                    <button type="button" onclick="togglePassword('password_confirmation')" 
+                                    <button type="button" onclick="togglePassword('password_confirmation')"
                                             class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -85,13 +85,13 @@
                             <!-- Hak Akses -->
                             <div class="md:col-span-2">
                                 <label for="hak_akses" class="block text-sm font-medium text-gray-700">Hak Akses</label>
-                                <select name="hak_akses" id="hak_akses" 
+                                <select name="hak_akses" id="hak_akses"
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                                         required>
                                     <option value="">Pilih Hak Akses</option>
-                                    <option value="superadmin" {{ $user->hak_akses === 'superadmin' ? 'selected' : '' }}>Super Admin</option>
-                                    <option value="admin_barang" {{ $user->hak_akses === 'admin_barang' ? 'selected' : '' }}>Admin Barang</option>
-                                    <option value="kepala_gudang" {{ $user->hak_akses === 'kepala_gudang' ? 'selected' : '' }}>Kepala Gudang</option>
+                                    <option value="superadmin" {{ $user->role === 'superadmin' ? 'selected' : '' }}>Super Admin</option>
+                                    <option value="admin_barang" {{ $user->role === 'admin_barang' ? 'selected' : '' }}>Admin Barang</option>
+                                    <option value="kepala_gudang" {{ $user->role === 'kepala_gudang' ? 'selected' : '' }}>Kepala Gudang</option>
                                 </select>
                                 @error('hak_akses')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -100,7 +100,7 @@
                         </div>
 
                         <div class="flex justify-end space-x-3">
-                            <button type="submit" 
+                            <button type="submit"
                                     class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center space-x-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -119,7 +119,7 @@
         function togglePassword(fieldId) {
             const passwordField = document.getElementById(fieldId);
             const fieldType = passwordField.getAttribute('type');
-            
+
             if (fieldType === 'password') {
                 passwordField.setAttribute('type', 'text');
             } else {

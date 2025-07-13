@@ -25,15 +25,15 @@ class AuthServiceProvider extends ServiceProvider
 
         // Define gates for role-based access
         Gate::define('superadmin', function ($user) {
-            return $user->hak_akses === 'superadmin';
+            return $user->role === 'superadmin';
         });
 
         Gate::define('admin_barang', function ($user) {
-            return $user->hak_akses === 'admin_barang';
+            return $user->role === 'admin_barang';
         });
 
         Gate::define('kepala_gudang', function ($user) {
-            return $user->hak_akses === 'kepala_gudang';
+            return $user->role === 'kepala_gudang';
         });
     }
 } 
