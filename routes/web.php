@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
-    Route::get('/superadmin', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/superadmin', [DashboardController::class, 'index'])->name('dashboard.superadmin');
 
     Route::resource('manajemenuser', ManajemenUserController::class);
 });
