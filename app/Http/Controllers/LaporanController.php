@@ -78,8 +78,9 @@ class LaporanController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         
-        $query = BarangMasuk::with(['kelolaBarang.satuan'])
-            ->orderBy('tanggal', 'desc');
+        $query = BarangMasuk::with(['kelolaBarang' => function($q) {
+            $q->with('satuanBarang');
+        }])->orderBy('tanggal', 'desc');
 
         if ($startDate && $endDate) {
             $query->whereBetween('tanggal', [
@@ -119,8 +120,9 @@ class LaporanController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         
-        $query = BarangKeluar::with(['kelolaBarang.satuan'])
-            ->orderBy('tanggal', 'desc');
+        $query = BarangKeluar::with(['kelolaBarang' => function($q) {
+            $q->with('satuanBarang');
+        }])->orderBy('tanggal', 'desc');
 
         if ($startDate && $endDate) {
             $query->whereBetween('tanggal', [

@@ -21,9 +21,22 @@ class BarangKeluarController extends Controller
 
     public function create()
     {
+        // Generate ID Transaksi secara otomatis
+        $lastTransaction = BarangKeluar::orderBy('id_transaksi', 'desc')->first();
+        $prefix = 'TRX-BK-' . date('Ymd');
+        
+        if ($lastTransaction && str_starts_with($lastTransaction->id_transaksi, $prefix)) {
+            $lastNumber = (int) substr($lastTransaction->id_transaksi, -4);
+            $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            $newNumber = '0001';
+        }
+        
+        $newTransactionId = $prefix . $newNumber;
+        
         $kelolabarangs = KelolaBarang::all();
         $satuans = Satuan::all();
-        return view('barangkeluar.create', compact('kelolabarangs', 'satuans'));
+        return view('barangkeluar.create', compact('kelolabarangs', 'satuans', 'newTransactionId'));
     }
 
     public function store(Request $request)
@@ -35,8 +48,12 @@ class BarangKeluarController extends Controller
             'jumlah_keluar' => 'required|integer',
             'satuan' => 'required|string',
         ]);
-        BarangKeluar::create($request->all());
-        return redirect()->route('barangkeluar.index')->with('success', 'Data barang keluar berhasil ditambahkan!');
+        
+        // Create with jumlah_barang
+        $data = $request->all();
+        $data['jumlah_barang'] = $data['jumlah_keluar'];
+        BarangKeluar::create($data);
+        return redirect()->route('adminbarang.barangkeluar.index')->with('success', 'Data barang keluar berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -54,16 +71,32 @@ class BarangKeluarController extends Controller
             'jumlah_keluar' => 'required|integer',
             'satuan' => 'required|string',
         ]);
+        
         $barangkeluar = BarangKeluar::findOrFail($id);
-        $barangkeluar->update($request->all());
-        return redirect()->route('barangkeluar.index')->with('success', 'Data barang keluar berhasil diupdate!');
+        
+        // Update with jumlah_barang
+        $data = $request->all();
+        $data['jumlah_barang'] = $data['jumlah_keluar'];
+        $barangkeluar->update($data);
+        return redirect()->route('adminbarang.barangkeluar.index')->with('success', 'Data barang keluar berhasil diupdate!');
     }
 
     public function destroy($id)
     {
-        $barangkeluar = BarangKeluar::findOrFail($id);
-        $barangkeluar->delete();
-        return redirect()->route('barangkeluar.index')->with('success', 'Data barang keluar berhasil dihapus!');
+        try {
+            DB::beginTransaction();
+            
+            $barangkeluar = BarangKeluar::findOrFail($id);
+            $barangkeluar->delete();
+            
+            DB::commit();
+            return redirect()->route('adminbarang.barangkeluar.index')
+                ->with('success', 'Data barang keluar berhasil dihapus!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('adminbarang.barangkeluar.index')
+                ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+        }
     }
 
     public function downloadTemplate()
@@ -129,21 +162,6 @@ class BarangKeluarController extends Controller
             // Lewati baris header
             array_shift($rows);
 
-            // Generate ID Transaksi otomatis
-            $prefix = 'TRX-BK-' . date('Ymd');
-            $lastTransaction = BarangKeluar::where('id_transaksi', 'like', $prefix . '%')
-                ->orderBy('id_transaksi', 'desc')
-                ->first();
-
-            if ($lastTransaction) {
-                $lastNumber = (int) substr($lastTransaction->id_transaksi, -4);
-                $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
-            } else {
-                $newNumber = '0001';
-            }
-            
-            $idTransaksi = $prefix . $newNumber;
-
             $errors = [];
             $successCount = 0;
 
@@ -180,14 +198,33 @@ class BarangKeluarController extends Controller
                     continue;
                 }
 
-                // Buat data barang keluar
-                BarangKeluar::create([
+                // Generate unique ID for each item
+                $prefix = 'TRX-BK-' . date('Ymd');
+                $lastTransaction = BarangKeluar::where('id_transaksi', 'like', $prefix . '%')
+                    ->orderBy('id_transaksi', 'desc')
+                    ->first();
+
+                if ($lastTransaction) {
+                    $lastNumber = (int) substr($lastTransaction->id_transaksi, -4);
+                    $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+                } else {
+                    $newNumber = '0001';
+                }
+                
+                $idTransaksi = $prefix . $newNumber;
+
+                // Prepare data for creation
+                $data = [
                     'id_transaksi' => $idTransaksi,
                     'tanggal' => date('Y-m-d'),
                     'barang' => $namaBarang,
                     'jumlah_keluar' => $jumlahKeluar,
+                    'jumlah_barang' => $jumlahKeluar,
                     'satuan' => $satuan,
-                ]);
+                ];
+
+                // Buat data barang keluar
+                BarangKeluar::create($data);
 
                 // Update stok barang
                 $kelolaBarang->stok -= $jumlahKeluar;
@@ -213,5 +250,11 @@ class BarangKeluarController extends Controller
                 ->with('error', 'Terjadi kesalahan saat mengimpor data: ' . $e->getMessage())
                 ->withInput();
         }
+    }
+
+    public function show($id)
+    {
+        $barangkeluar = BarangKeluar::findOrFail($id);
+        return view('barangkeluar.show', compact('barangkeluar'));
     }
 }

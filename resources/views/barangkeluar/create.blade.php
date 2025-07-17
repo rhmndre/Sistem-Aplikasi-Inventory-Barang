@@ -14,7 +14,7 @@
                         <div class="grid grid-cols-1 gap-6">
                             <div>
                                 <x-input-label for="id_transaksi" value="ID Transaksi" />
-                                <x-text-input id="id_transaksi" name="id_transaksi" type="text" class="mt-1 block w-full" required />
+                                <x-text-input id="id_transaksi" name="id_transaksi" type="text" class="mt-1 block w-full" value="{{ $newTransactionId }}" readonly />
                                 <x-input-error :messages="$errors->get('id_transaksi')" class="mt-2" />
                             </div>
 

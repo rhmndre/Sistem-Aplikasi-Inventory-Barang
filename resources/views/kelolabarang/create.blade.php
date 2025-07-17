@@ -37,7 +37,7 @@
                         </div>
 
                         <div>
-                            <x-input-label for="stok" value="Stok Minimum" />
+                            <x-input-label for="stok" value="Stok Barang" />
                             <x-text-input id="stok" class="block mt-1 w-full" type="number" name="stok" :value="old('stok', 0)" required />
                             <x-input-error :messages="$errors->get('stok')" class="mt-2" />
                         </div>
@@ -53,6 +53,20 @@
                                 @endforeach
                             </select>
                             <x-input-error :messages="$errors->get('satuan_id')" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <x-input-label for="harga" value="Harga Barang" />
+                            <x-text-input id="harga" class="block mt-1 w-full" type="number" name="harga" :value="old('harga', 0)" required step="0.01" min="0" />
+                            <x-input-error :messages="$errors->get('harga')" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <x-input-label for="keterangan" value="Keterangan" />
+                            <textarea id="keterangan" name="keterangan" rows="4" 
+                                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                required>{{ old('keterangan') }}</textarea>
+                            <x-input-error :messages="$errors->get('keterangan')" class="mt-2" />
                         </div>
 
                         <div>

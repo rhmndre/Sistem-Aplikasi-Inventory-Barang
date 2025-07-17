@@ -95,7 +95,9 @@
                                     @forelse($barangMasukTerbaru as $barangMasuk)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $barangMasuk->created_at->format('d/m/Y') }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barangMasuk->kelolaBarang->nama_barang }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                {{ $barangMasuk->kelolaBarang ? $barangMasuk->kelolaBarang->nama_barang : 'Barang tidak ditemukan' }}
+                                            </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $barangMasuk->jumlah_masuk }}</td>
                                         </tr>
                                     @empty
@@ -126,7 +128,9 @@
                                     @forelse($barangKeluarTerbaru as $barangKeluar)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $barangKeluar->created_at->format('d/m/Y') }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barangKeluar->kelolaBarang->nama_barang }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                {{ $barangKeluar->kelolaBarang ? $barangKeluar->kelolaBarang->nama_barang : 'Barang tidak ditemukan' }}
+                                            </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $barangKeluar->jumlah_keluar }}</td>
                                         </tr>
                                     @empty
@@ -167,7 +171,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barang->nama_barang }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barang->jenisBarang->jenis_barang }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barang->stok }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barang->satuan->nama_satuan }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barang->satuan }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
                                                     Stok Minimum

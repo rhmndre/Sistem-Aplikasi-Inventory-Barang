@@ -29,50 +29,33 @@
                     @endif
 
                     <div class="mb-6">
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Petunjuk Import:</h3>
-                        <ol class="list-decimal list-inside space-y-1">
-                            <li>Download template Excel yang sudah disediakan</li>
-                            <li>Isi data sesuai format yang ada di template</li>
-                            <li>Pastikan nama barang sesuai dengan yang ada di sistem</li>
-                            <li>Pastikan satuan sesuai dengan yang ada di sistem</li>
-                            <li>Upload file yang sudah diisi</li>
-                        </ol>
+                        <a href="{{ route('adminbarang.barangmasuk.template') }}" class="text-blue-600 hover:text-blue-800">
+                            ← Download Template Excel
+                        </a>
                     </div>
 
-                    <div class="mb-6">
-                        <x-primary-button tag="a" href="{{ route('adminbarang.barangmasuk.template') }}" class="inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                            Download Template Excel
-                        </x-primary-button>
-                    </div>
-
-                    <form action="{{ route('adminbarang.barangmasuk.import.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                    <form action="{{ route('adminbarang.barangmasuk.import.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
                         <div>
-                            <x-input-label for="file" value="File Excel" />
-                            <input type="file" id="file" name="file" 
-                                class="mt-1 block w-full text-sm text-gray-500
-                                    file:mr-4 file:py-2 file:px-4
-                                    file:rounded-md file:border-0
-                                    file:text-sm file:font-semibold
-                                    file:bg-blue-50 file:text-blue-700
-                                    hover:file:bg-blue-100"
-                                accept=".xlsx,.xls">
+                            <label for="file" class="block text-sm font-medium text-gray-700">File Excel</label>
+                            <input type="file" name="file" id="file" accept=".xlsx,.xls" class="mt-1 block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-purple-50 file:text-purple-700
+                                hover:file:bg-purple-100
+                            "/>
                             @error('file')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div class="flex items-center gap-4">
-                            <x-primary-button type="submit">
+                            <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                                 Import Data
-                            </x-primary-button>
-
-                            <a href="{{ route('adminbarang.barangmasuk.index') }}" 
-                                class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
-                                Kembali
+                            </button>
+                            <a href="{{ route('adminbarang.barangmasuk.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+                                Batal
                             </a>
                         </div>
                     </form>

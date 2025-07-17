@@ -6,7 +6,7 @@
             </h2>
             <div class="flex gap-4">
                 <a href="{{ route('adminbarang.barangmasuk.import') }}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
-                    Import CSV
+                    Import Excel
                 </a>
             <a href="{{ route('adminbarang.barangmasuk.create') }}" 
                class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center space-x-2">

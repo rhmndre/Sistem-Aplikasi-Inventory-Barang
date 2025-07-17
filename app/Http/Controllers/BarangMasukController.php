@@ -310,6 +310,21 @@ class BarangMasukController extends Controller
                     continue;
                 }
 
+                // Generate unique ID for each item
+                $prefix = 'TRX-BM-' . date('Ymd');
+                $lastTransaction = BarangMasuk::where('id_transaksi', 'like', $prefix . '%')
+                    ->orderBy('id_transaksi', 'desc')
+                    ->first();
+
+                if ($lastTransaction) {
+                    $lastNumber = (int) substr($lastTransaction->id_transaksi, -4);
+                    $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+                } else {
+                    $newNumber = '0001';
+                }
+                
+                $idTransaksi = $prefix . $newNumber;
+
                 // Buat data barang masuk
                 BarangMasuk::create([
                     'id_transaksi' => $idTransaksi,

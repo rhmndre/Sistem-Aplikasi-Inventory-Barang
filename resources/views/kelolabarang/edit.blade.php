@@ -8,7 +8,7 @@
     <div class="py-10">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 rounded shadow-md">
-                <form action="{{ route('adminbarang.kelolabarang.update', $barang->id_barang) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('adminbarang.kelolabarang.update', $barang->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -26,32 +26,32 @@
 
                     {{-- Jenis Barang --}}
                     <div class="mb-4">
-                        <label for="jenis_barang_id" class="block text-sm font-medium text-gray-700">Jenis Barang</label>
-                        <select name="jenis_barang_id" id="jenis_barang_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                        <label for="jenis_barang" class="block text-sm font-medium text-gray-700">Jenis Barang</label>
+                        <select name="jenis_barang" id="jenis_barang" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
                             <option value="">Pilih Jenis Barang</option>
                             @foreach($jenisBarangs as $jenis)
-                                <option value="{{ $jenis->id }}" {{ old('jenis_barang_id', $barang->jenis_barang_id) == $jenis->id ? 'selected' : '' }}>
-                                    {{ $jenis->jenis_barang }}
+                                <option value="{{ $jenis->nama_jenis }}" {{ old('jenis_barang', $barang->jenis_barang) == $jenis->nama_jenis ? 'selected' : '' }}>
+                                    {{ $jenis->nama_jenis }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('jenis_barang_id')
+                        @error('jenis_barang')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
                     {{-- Satuan --}}
                     <div class="mb-4">
-                        <label for="satuan_id" class="block text-sm font-medium text-gray-700">Satuan</label>
-                        <select name="satuan_id" id="satuan_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                        <label for="satuan" class="block text-sm font-medium text-gray-700">Satuan</label>
+                        <select name="satuan" id="satuan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
                             <option value="">Pilih Satuan</option>
-                            @foreach($satuans as $satuan)
-                                <option value="{{ $satuan->id }}" {{ old('satuan_id', $barang->satuan_id) == $satuan->id ? 'selected' : '' }}>
-                                    {{ $satuan->nama_satuan }}
+                            @foreach($satuans as $s)
+                                <option value="{{ $s->nama_satuan }}" {{ old('satuan', $barang->satuan) == $s->nama_satuan ? 'selected' : '' }}>
+                                    {{ $s->nama_satuan }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('satuan_id')
+                        @error('satuan')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
@@ -64,6 +64,29 @@
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             required>
                         @error('stok')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Harga --}}
+                    <div class="mb-4">
+                        <label for="harga" class="block text-sm font-medium text-gray-700">Harga</label>
+                        <input type="number" name="harga" id="harga"
+                            value="{{ old('harga', $barang->harga) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            required>
+                        @error('harga')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Keterangan --}}
+                    <div class="mb-4">
+                        <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>
+                        <textarea name="keterangan" id="keterangan"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            required>{{ old('keterangan', $barang->keterangan) }}</textarea>
+                        @error('keterangan')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>

@@ -66,7 +66,6 @@
                 <th>Nama Barang</th>
                 <th>Jumlah</th>
                 <th>Satuan</th>
-                <th>Keterangan</th>
             </tr>
         </thead>
         <tbody>
@@ -78,7 +77,6 @@
                     <td>{{ $barang->kelolaBarang->nama_barang }}</td>
                     <td style="text-align: center">{{ $barang->jumlah }}</td>
                     <td style="text-align: center">{{ $barang->kelolaBarang->satuan->nama_satuan }}</td>
-                    <td>{{ $barang->keterangan }}</td>
                 </tr>
             @endforeach
         </tbody>

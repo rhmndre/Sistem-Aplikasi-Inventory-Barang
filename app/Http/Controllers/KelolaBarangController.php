@@ -7,6 +7,7 @@ use App\Models\Satuan;
 use App\Models\JenisBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class KelolaBarangController extends Controller
 {
@@ -26,7 +27,8 @@ class KelolaBarangController extends Controller
     {
         $satuans = Satuan::all();
         $jenisBarangs = JenisBarang::all();
-        return view('kelolabarang.create', compact('satuans', 'jenisBarangs'));
+        $nextId = KelolaBarang::max('id') + 1;
+        return view('kelolabarang.create', compact('satuans', 'jenisBarangs', 'nextId'));
     }
 
     public function store(Request $request)
@@ -41,42 +43,44 @@ class KelolaBarangController extends Controller
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // max 2MB
         ]);
 
-        $data = $request->except('foto');
+        try {
+            DB::beginTransaction();
 
-        // Generate kode barang berdasarkan jenis
-        $jenis = JenisBarang::where('nama_jenis', $request->jenis_barang)->first();
-        $prefix = '';
-        switch($jenis->nama_jenis) {
-            case 'Pupuk':
-                $prefix = 'PPK';
-                break;
-            case 'Bibit':
-                $prefix = 'BBT';
-                break;
-            case 'Produk Stunting':
-                $prefix = 'STN';
-                break;
-            case 'Vaksin Ternak':
-                $prefix = 'VKS';
-                break;
-            default:
-                $prefix = 'BRG';
+            $data = $request->except(['foto', '_token']);
+
+            // Generate kode barang berdasarkan jenis
+            $jenis = JenisBarang::where('nama_jenis', $request->jenis_barang)->first();
+            $prefix = match($jenis->nama_jenis) {
+                'Pupuk' => 'PPK',
+                'Bibit' => 'BBT',
+                'Produk Stunting' => 'STN',
+                'Vaksin Ternak' => 'VKS',
+                default => 'BRG',
+            };
+            
+            // Hitung jumlah barang dengan prefix yang sama
+            $count = KelolaBarang::where('kode_barang', 'like', $prefix.'%')->count();
+            $data['kode_barang'] = $prefix . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+
+            // Upload dan konversi foto ke BLOB jika ada
+            if ($request->hasFile('foto')) {
+                $foto = $request->file('foto');
+                $data['foto'] = file_get_contents($foto->getRealPath());
+            }
+
+            KelolaBarang::create($data);
+
+            DB::commit();
+            
+            return redirect()->route('adminbarang.kelolabarang.index')
+                ->with('success', 'Data barang berhasil ditambahkan');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage())
+                ->withInput();
         }
-        
-        // Hitung jumlah barang dengan prefix yang sama
-        $count = KelolaBarang::where('kode_barang', 'like', $prefix.'%')->count();
-        $data['kode_barang'] = $prefix . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
-
-        // Upload dan konversi foto ke BLOB jika ada
-        if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $data['foto'] = file_get_contents($foto->getRealPath());
-        }
-
-        KelolaBarang::create($data);
-
-        return redirect()->route('adminbarang.kelolabarang.index')
-            ->with('success', 'Data barang berhasil ditambahkan');
     }
 
     public function edit($id)   
@@ -99,18 +103,31 @@ class KelolaBarangController extends Controller
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // max 2MB
         ]);
 
-        $barang = KelolaBarang::findOrFail($id);
-        $data = $request->except('foto');
+        try {
+            DB::beginTransaction();
+            
+            $barang = KelolaBarang::findOrFail($id);
+            $data = $request->except(['foto', '_token', '_method']);
 
-        // Upload dan konversi foto ke BLOB jika ada foto baru
-        if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $data['foto'] = file_get_contents($foto->getRealPath());
+            // Upload dan konversi foto ke BLOB jika ada foto baru
+            if ($request->hasFile('foto')) {
+                $foto = $request->file('foto');
+                $data['foto'] = file_get_contents($foto->getRealPath());
+            }
+
+            $barang->update($data);
+            
+            DB::commit();
+            
+            return redirect()->route('adminbarang.kelolabarang.index')
+                ->with('success', 'Data barang berhasil diperbarui');
+                
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage())
+                ->withInput();
         }
-
-        $barang->update($data);
-        return redirect()->route('adminbarang.kelolabarang.index')
-            ->with('success', 'Data barang berhasil diperbarui');
     }
 
     public function destroy($id)

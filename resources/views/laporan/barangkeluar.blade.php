@@ -47,10 +47,8 @@
                                     <th class="px-4 py-2 border">No</th>
                                     <th class="px-4 py-2 border">Tanggal</th>
                                     <th class="px-4 py-2 border">Nama Barang</th>
-                                    <th class="px-4 py-2 border">Jumlah</th>
+                                    <th class="px-4 py-2 border">Jumlah Keluar</th>
                                     <th class="px-4 py-2 border">Satuan</th>
-                                    <th class="px-4 py-2 border">Tujuan</th>
-                                    <th class="px-4 py-2 border">Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,11 +56,9 @@
                                     <tr>
                                         <td class="px-4 py-2 border text-center">{{ $index + 1 }}</td>
                                         <td class="px-4 py-2 border text-center">{{ date('d/m/Y', strtotime($barang->tanggal)) }}</td>
-                                        <td class="px-4 py-2 border">{{ $barang->kelolaBarang->nama_barang }}</td>
-                                        <td class="px-4 py-2 border text-center">{{ $barang->jumlah }}</td>
-                                        <td class="px-4 py-2 border text-center">{{ $barang->kelolaBarang->satuan->nama_satuan }}</td>
-                                        <td class="px-4 py-2 border">{{ $barang->tujuan }}</td>
-                                        <td class="px-4 py-2 border">{{ $barang->keterangan }}</td>
+                                        <td class="px-4 py-2 border">{{ optional($barang->kelolaBarang)->nama_barang ?? '-' }}</td>
+                                        <td class="px-4 py-2 border text-center">{{ $barang->jumlah_keluar }}</td>
+                                        <td class="px-4 py-2 border text-center">{{ optional(optional($barang->kelolaBarang)->satuanBarang)->nama_satuan ?? $barang->satuan }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

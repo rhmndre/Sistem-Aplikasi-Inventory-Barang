@@ -29,7 +29,7 @@
                     @endif
 
                     <div class="mb-6">
-                        <a href="{{ route('adminbarang.barangkeluar.downloadTemplate') }}" class="text-blue-600 hover:text-blue-800">
+                        <a href="{{ route('adminbarang.barangkeluar.template') }}" class="text-blue-600 hover:text-blue-800">
                             ← Download Template Excel
                         </a>
                     </div>

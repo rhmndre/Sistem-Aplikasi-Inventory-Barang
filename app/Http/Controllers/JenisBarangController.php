@@ -24,7 +24,7 @@ class JenisBarangController extends Controller
             'nama_jenis' => 'required|string|max:255|unique:jenis_barangs',
         ]);
         
-        JenisBarang::create($request->only('nama_jenis'));
+        JenisBarang::firstOrCreate($request->only('nama_jenis'));
         return redirect()->route('adminbarang.jenisbarang.index')->with('success', 'Jenis barang berhasil ditambahkan.');
     }
 

@@ -30,17 +30,17 @@
 
                             <div>
                                 <label class="block font-medium text-gray-700">Jenis Barang:</label>
-                                <p class="mt-1">{{ $barang->jenisBarang->jenis_barang }}</p>
+                                <p class="mt-1">{{ $barang->jenis_barang }}</p>
                             </div>
 
                             <div>
                                 <label class="block font-medium text-gray-700">Stok:</label>
-                                <p class="mt-1">{{ $barang->stok }} {{ $barang->satuan->nama_satuan }}</p>
+                                <p class="mt-1">{{ $barang->stok }} {{ $barang->satuan}}</p>
                             </div>
 
                             <div>
                                 <label class="block font-medium text-gray-700">Minimum Stok:</label>
-                                <p class="mt-1">{{ $barang->minimum }} {{ $barang->satuan->nama_satuan }}</p>
+                                <p class="mt-1">{{ $barang->minimum }} {{ $barang->satuan}}</p>
                             </div>
 
                             <div>

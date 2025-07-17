@@ -17,7 +17,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
+        return view("auth.login");
     }
 
     /**
@@ -30,17 +30,17 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $user = Auth::user();
-        
+
         // Redirect based on user role
-        switch($user->hak_akses) {
-            case 'superadmin':
-                return redirect()->intended(route('superadmin.dashboard'));
-            case 'admin_barang':
-                return redirect()->intended(route('adminbarang.kelolabarang.index'));
-            case 'kepala_gudang':
-                return redirect()->intended(route('dashboard'));
+        switch ($user->role) {
+            case "superadmin":
+                return redirect()->route("superadmin.dashboard");
+            case "adminbarang":
+                return redirect()->route("adminbarang.kelolabarang.index");
+            case "kepalagudang":
+                return redirect()->route("dashboard");
             default:
-                return redirect()->intended(RouteServiceProvider::HOME);
+                return redirect()->route(RouteServiceProvider::HOME);
         }
     }
 
@@ -49,12 +49,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::guard("web")->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect("/");
     }
 }

@@ -17,6 +17,11 @@ class KelolaBarang extends Model
         'foto'
     ];
 
+    public function satuan()
+    {
+        return $this->belongsTo(Satuan::class, 'satuan', 'nama_satuan');
+    }
+
     public function jenisBarang()
     {
         return $this->belongsTo(JenisBarang::class, 'jenis_barang', 'nama_jenis');
