@@ -23,7 +23,10 @@ class SatuanSeeder extends Seeder
         ];
 
         foreach ($satuans as $satuan) {
-            Satuan::create($satuan);
+            Satuan::updateOrCreate(
+                ['nama_satuan' => $satuan['nama_satuan']],
+                $satuan
+            );
         }
     }
 } 
