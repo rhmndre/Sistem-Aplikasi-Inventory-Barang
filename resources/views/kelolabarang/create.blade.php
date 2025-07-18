@@ -28,8 +28,8 @@
                             <select id="jenis_barang_id" name="jenis_barang_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                 <option value="">Pilih Jenis Barang</option>
                                 @foreach($jenisBarangs as $jenisBarang)
-                                    <option value="{{ $jenisBarang->id }}" {{ old('jenis_barang_id') == $jenisBarang->id ? 'selected' : '' }}>
-                                        {{ $jenisBarang->jenis_barang }}
+                                    <option class="text-black" value="{{ $jenisBarang->id }}" {{ old('jenis_barang_id') == $jenisBarang->id ? 'selected' : '' }}>
+                                        {{ $jenisBarang->nama_jenis }}
                                     </option>
                                 @endforeach
                             </select>
@@ -63,7 +63,7 @@
 
                         <div>
                             <x-input-label for="keterangan" value="Keterangan" />
-                            <textarea id="keterangan" name="keterangan" rows="4" 
+                            <textarea id="keterangan" name="keterangan" rows="4"
                                 class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                 required>{{ old('keterangan') }}</textarea>
                             <x-input-error :messages="$errors->get('keterangan')" class="mt-2" />
@@ -71,7 +71,7 @@
 
                         <div>
                             <x-input-label for="foto" value="Foto Barang" />
-                            <input type="file" id="foto" name="foto" accept="image/jpeg,image/png" 
+                            <input type="file" id="foto" name="foto" accept="image/jpeg,image/png"
                                    class="block w-full text-sm text-gray-500 mt-1
                                           file:mr-4 file:py-2 file:px-4
                                           file:rounded-md file:border-0

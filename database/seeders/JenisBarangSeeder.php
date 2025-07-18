@@ -29,7 +29,10 @@ class JenisBarangSeeder extends Seeder
         ];
 
         foreach ($jenisBarang as $jenis) {
-            JenisBarang::create($jenis);
+            JenisBarang::updateOrCreate(
+                ['nama_jenis' => $jenis['nama_jenis']],
+                $jenis
+            );
         }
     }
 } 
