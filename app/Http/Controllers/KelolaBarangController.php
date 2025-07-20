@@ -72,14 +72,16 @@ class KelolaBarangController extends Controller
 
             DB::commit();
             
-            return redirect()->route('adminbarang.kelolabarang.index')
-                ->with('success', 'Data barang berhasil ditambahkan');
+            return redirect()
+            ->route('adminbarang.kelolabarang.index')
+            ->with('success', 'Data barang berhasil ditambahkan');
 
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()
-                ->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage())
-                ->withInput();
+            return redirect()
+            ->back()
+            ->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage())
+            ->withInput();
         }
     }
 
