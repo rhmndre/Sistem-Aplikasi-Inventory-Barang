@@ -44,16 +44,47 @@ class BarangKeluarController extends Controller
         $request->validate([
             'id_transaksi' => 'required|string|unique:barang_keluars,id_transaksi',
             'tanggal' => 'required|date',
-            'barang' => 'required|string',
-            'jumlah_keluar' => 'required|integer',
-            'satuan' => 'required|string',
+            'items.*.barang' => 'required|string',
+            'items.*.jumlah_keluar' => 'required|integer|min:1',
+            'items.*.satuan' => 'required|string',
         ]);
-        
-        // Create with jumlah_barang
-        $data = $request->all();
-        $data['jumlah_barang'] = $data['jumlah_keluar'];
-        BarangKeluar::create($data);
-        return redirect()->route('adminbarang.barangkeluar.index')->with('success', 'Data barang keluar berhasil ditambahkan!');
+
+        try {
+            DB::beginTransaction();
+
+            foreach ($request->items as $item) {
+                $barangKeluar = new BarangKeluar([
+                    'id_transaksi' => $request->id_transaksi,
+                    'tanggal' => $request->tanggal,
+                    'barang' => $item['barang'],
+                    'jumlah_keluar' => $item['jumlah_keluar'],
+                    'jumlah_barang' => $item['jumlah_keluar'], // Set jumlah_barang sama dengan jumlah_keluar
+                    'satuan' => $item['satuan'],
+                ]);
+
+                // Cek dan update stok barang
+                $barang = KelolaBarang::where('nama_barang', $item['barang'])->first();
+                if ($barang) {
+                    if ($barang->stok >= $item['jumlah_keluar']) {
+                        $barang->stok -= $item['jumlah_keluar'];
+                        $barang->save();
+                        $barangKeluar->save();
+                    } else {
+                        throw new \Exception("Stok {$item['barang']} tidak mencukupi. Stok tersedia: {$barang->stok}");
+                    }
+                } else {
+                    throw new \Exception("Barang {$item['barang']} tidak ditemukan");
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('adminbarang.barangkeluar.index')->with('success', 'Data barang keluar berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     public function edit($id)

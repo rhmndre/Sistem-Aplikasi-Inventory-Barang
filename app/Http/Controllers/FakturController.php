@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faktur;
-use App\Models\BarangMasuk;
+use App\Models\BarangKeluar;
 use App\Models\KelolaBarang;
 use App\Models\JenisBarang;
 use App\Models\Satuan;
@@ -22,19 +22,19 @@ class FakturController extends Controller
     {
         // Generate nomor faktur untuk ditampilkan di form (readonly)
         $nomorFaktur = Faktur::generateNomorFaktur();
-        $barangMasuks = BarangMasuk::all();
+        $barangKeluars = BarangKeluar::all();
         $kelolaBarangs = KelolaBarang::with(['jenisBarang', 'satuanBarang'])->get();
         $jenisBarangs = JenisBarang::all();
         $satuans = Satuan::all();
-        
-        return view('faktur.create', compact('nomorFaktur', 'barangMasuks', 'kelolaBarangs', 'jenisBarangs', 'satuans'));
+
+        return view('faktur.create', compact('nomorFaktur', 'barangKeluars', 'kelolaBarangs', 'jenisBarangs', 'satuans'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'tanggal_faktur' => 'required|date',
-            'id_transaksi' => 'required|exists:barang_masuks,id_transaksi',
+            'id_transaksi' => 'required|exists:barang_keluars,id_transaksi',
             'nama_barang' => 'required|exists:kelola_barangs,nama_barang',
             'jenis_barang' => 'required|exists:jenis_barangs,nama_jenis',
             'jumlah' => 'required|numeric|min:1',
@@ -59,12 +59,12 @@ class FakturController extends Controller
 
     public function edit(Faktur $faktur)
     {
-        $barangMasuks = BarangMasuk::all();
+        $barangKeluars = BarangKeluar::all();
         $kelolaBarangs = KelolaBarang::with(['jenisBarang', 'satuanBarang'])->get();
         $jenisBarangs = JenisBarang::all();
         $satuans = Satuan::all();
-        
-        return view('faktur.edit', compact('faktur', 'barangMasuks', 'kelolaBarangs', 'jenisBarangs', 'satuans'));
+
+        return view('faktur.edit', compact('faktur', 'barangKeluars', 'kelolaBarangs', 'jenisBarangs', 'satuans'));
     }
 
     public function update(Request $request, Faktur $faktur)

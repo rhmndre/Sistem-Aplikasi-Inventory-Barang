@@ -24,16 +24,16 @@
                         </div>
 
                         <div>
-                            <x-input-label for="jenis_barang_id" value="Jenis Barang" />
-                            <select id="jenis_barang_id" name="jenis_barang_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                            <x-input-label for="jenis_barang" value="Jenis Barang" />
+                            <select id="jenis_barang" name="jenis_barang" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                 <option value="">Pilih Jenis Barang</option>
                                 @foreach($jenisBarangs as $jenisBarang)
-                                    <option value="{{ $jenisBarang->id }}" {{ old('jenis_barang_id') == $jenisBarang->id ? 'selected' : '' }}>
-                                        {{ $jenisBarang->jenis_barang }}
+                                    <option value="{{ $jenisBarang->nama_jenis }}" {{ old('jenis_barang') == $jenisBarang->nama_jenis ? 'selected' : '' }}>
+                                        {{ $jenisBarang->nama_jenis }}
                                     </option>
                                 @endforeach
                             </select>
-                            <x-input-error :messages="$errors->get('jenis_barang_id')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('jenis_barang')" class="mt-2" />
                         </div>
 
                         <div>

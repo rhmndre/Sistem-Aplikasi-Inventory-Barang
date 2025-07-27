@@ -44,8 +44,33 @@ class LoginRequest extends FormRequest
         $credentials = $this->only('email', 'password');
         $remember = $this->boolean('remember');
 
-        // Try regular users first
+        // Try both users and manajemen_users tables
         if (Auth::guard('web')->attempt($credentials, $remember)) {
+            RateLimiter::clear($this->throttleKey());
+            return;
+        }
+
+        // Try manajemen_users table
+        $manajemenUser = \App\Models\ManajemenUser::where('email', $this->email)->first();
+        if ($manajemenUser && \Illuminate\Support\Facades\Hash::check($this->password, $manajemenUser->password)) {
+            // If manajemen user exists but no corresponding user exists, create one
+            $user = \App\Models\User::where('email', $this->email)->first();
+            if (!$user) {
+                $roleMap = [
+                    'superadmin' => 'superadmin',
+                    'admin_barang' => 'adminbarang',
+                    'kepala_gudang' => 'kepalagudang'
+                ];
+
+                $user = \App\Models\User::create([
+                    'name' => $manajemenUser->nama_user,
+                    'email' => $manajemenUser->email,
+                    'password' => $manajemenUser->password, // Already hashed
+                    'role' => $roleMap[$manajemenUser->hak_akses],
+                ]);
+            }
+
+            Auth::guard('web')->login($user, $remember);
             RateLimiter::clear($this->throttleKey());
             return;
         }

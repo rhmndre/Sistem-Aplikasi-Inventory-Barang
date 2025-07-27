@@ -51,12 +51,12 @@
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('id_transaksi') border-red-500 @enderror"
                                 required>
                                 <option value="">Pilih ID Transaksi</option>
-                                @foreach($barangMasuks as $barangMasuk)
-                                    <option value="{{ $barangMasuk->id_transaksi }}" 
-                                        data-nama="{{ $barangMasuk->barang }}"
-                                        data-jumlah="{{ $barangMasuk->jumlah_masuk }}"
-                                        data-satuan="{{ $barangMasuk->satuan }}">
-                                        {{ $barangMasuk->id_transaksi }} - {{ $barangMasuk->barang }}
+                                @foreach($barangKeluars as $barangKeluar)
+                                    <option value="{{ $barangKeluar->id_transaksi }}" 
+                                        data-nama="{{ $barangKeluar->barang }}"
+                                        data-jumlah="{{ $barangKeluar->jumlah_keluar }}"
+                                        data-satuan="{{ $barangKeluar->satuan }}">
+                                        {{ $barangKeluar->id_transaksi }} - {{ $barangKeluar->barang }}
                                     </option>
                                 @endforeach
                             </select>

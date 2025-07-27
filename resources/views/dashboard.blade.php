@@ -169,7 +169,7 @@
                                     @forelse($stokMinimum as $barang)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barang->nama_barang }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barang->jenisBarang->jenis_barang }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barang->jenis_barang }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barang->stok }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $barang->satuan }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">

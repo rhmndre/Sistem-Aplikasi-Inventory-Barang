@@ -28,15 +28,34 @@ class ManajemenUserController extends Controller
             'hak_akses' => 'required|string|in:superadmin,admin_barang,kepala_gudang',
         ]);
 
-        ManajemenUser::create([
+        // Hash password once
+        $hashedPassword = Hash::make($request->password);
+
+        $user = ManajemenUser::create([
             'nama_user' => $request->nama_user,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $hashedPassword,
             'hak_akses' => $request->hak_akses,
         ]);
 
+        // Convert hak_akses to role format
+        $roleMap = [
+            'superadmin' => 'superadmin',
+            'admin_barang' => 'adminbarang',
+            'kepala_gudang' => 'kepalagudang'
+        ];
+
+        // Create corresponding User record for authentication
+        \App\Models\User::create([
+            'name' => $request->nama_user,
+            'email' => $request->email,
+            'password' => $hashedPassword,  // Use the same hash
+            'role' => $roleMap[$request->hak_akses],
+            'email_verified_at' => now(),  // Mark as verified
+        ]);
+
         return redirect()->route('superadmin.manajemenuser.index')
-            ->with('success', 'User berhasil ditambahkan!');
+            ->with('success', 'User berhasil ditambahkan dan dapat login dengan credentials yang diberikan!');
     }
 
     public function edit($id)
@@ -54,7 +73,7 @@ class ManajemenUserController extends Controller
             'hak_akses' => 'required|string|in:superadmin,admin_barang,kepala_gudang',
         ]);
 
-        $user = ManajemenUser::findOrFail($id);
+        $manajemenUser = ManajemenUser::findOrFail($id);
         
         $data = [
             'nama_user' => $request->nama_user,
@@ -62,11 +81,36 @@ class ManajemenUserController extends Controller
             'hak_akses' => $request->hak_akses,
         ];
 
+        $hashedPassword = null;
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+            $hashedPassword = Hash::make($request->password);
+            $data['password'] = $hashedPassword;
         }
 
-        $user->update($data);
+        $manajemenUser->update($data);
+
+        // Convert hak_akses to role format
+        $roleMap = [
+            'superadmin' => 'superadmin',
+            'admin_barang' => 'adminbarang',
+            'kepala_gudang' => 'kepalagudang'
+        ];
+
+        // Update corresponding User record
+        $user = \App\Models\User::where('email', $manajemenUser->email)->first();
+        if ($user) {
+            $userData = [
+                'name' => $request->nama_user,
+                'email' => $request->email,
+                'role' => $roleMap[$request->hak_akses],
+            ];
+
+            if ($hashedPassword) {
+                $userData['password'] = $hashedPassword;  // Use the same hash
+            }
+
+            $user->update($userData);
+        }
 
         return redirect()->route('superadmin.manajemenuser.index')
             ->with('success', 'User berhasil diupdate!');
@@ -74,8 +118,13 @@ class ManajemenUserController extends Controller
 
     public function destroy($id)
     {
-        $user = ManajemenUser::findOrFail($id);
-        $user->delete();
+        $manajemenUser = ManajemenUser::findOrFail($id);
+        
+        // Delete corresponding User record
+        \App\Models\User::where('email', $manajemenUser->email)->delete();
+        
+        $manajemenUser->delete();
+        
         return redirect()->route('superadmin.manajemenuser.index')
             ->with('success', 'User berhasil dihapus!');
     }

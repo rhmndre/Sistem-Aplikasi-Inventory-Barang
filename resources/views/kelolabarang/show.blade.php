@@ -19,8 +19,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-4">
                             <div>
-                                <label class="block font-medium text-gray-700">ID Barang:</label>
-                                <p class="mt-1">{{ 'B' . str_pad($barang->id_barang, 4, '0', STR_PAD_LEFT) }}</p>
+                                <label class="block font-medium text-gray-700">Kode Barang:</label>
+                                <p class="mt-1">{{ $barang->kode_barang }}</p>
                             </div>
 
                             <div>
@@ -35,23 +35,33 @@
 
                             <div>
                                 <label class="block font-medium text-gray-700">Stok:</label>
-                                <p class="mt-1">{{ $barang->stok }} {{ $barang->satuan}}</p>
+                                <p class="mt-1">{{ $barang->stok }} {{ $barang->satuan }}</p>
                             </div>
 
                             <div>
-                                <label class="block font-medium text-gray-700">Minimum Stok:</label>
-                                <p class="mt-1">{{ $barang->minimum }} {{ $barang->satuan}}</p>
+                                <label class="block font-medium text-gray-700">Satuan:</label>
+                                <p class="mt-1">{{ $barang->satuan }}</p>
+                            </div>
+
+                            <div>
+                                <label class="block font-medium text-gray-700">Harga:</label>
+                                <p class="mt-1">Rp {{ number_format($barang->harga, 0, ',', '.') }}</p>
                             </div>
 
                             <div>
                                 <label class="block font-medium text-gray-700">Status Stok:</label>
                                 <p class="mt-1">
-                                    @if($barang->stok <= $barang->minimum)
+                                    @if($barang->stok <= 10)
                                         <span class="px-2 py-1 bg-red-500 text-white rounded text-sm">Stok Minimum</span>
                                     @else
                                         <span class="px-2 py-1 bg-green-500 text-white rounded text-sm">Stok Aman</span>
                                     @endif
                                 </p>
+                            </div>
+
+                            <div>
+                                <label class="block font-medium text-gray-700">Keterangan:</label>
+                                <p class="mt-1">{{ $barang->keterangan ?: 'Tidak ada keterangan' }}</p>
                             </div>
                         </div>
 

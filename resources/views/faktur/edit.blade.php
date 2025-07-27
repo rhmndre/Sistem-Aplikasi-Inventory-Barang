@@ -29,9 +29,9 @@
                                 <x-input-label for="id_transaksi" value="ID Transaksi" />
                                 <select id="id_transaksi" name="id_transaksi" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                     <option value="">Pilih ID Transaksi</option>
-                                    @foreach($barangMasuks as $barangMasuk)
-                                        <option value="{{ $barangMasuk->id_transaksi }}" {{ old('id_transaksi', $faktur->id_transaksi) == $barangMasuk->id_transaksi ? 'selected' : '' }}>
-                                            {{ $barangMasuk->id_transaksi }}
+                                    @foreach($barangKeluars as $barangKeluar)
+                                        <option value="{{ $barangKeluar->id_transaksi }}" {{ old('id_transaksi', $faktur->id_transaksi) == $barangKeluar->id_transaksi ? 'selected' : '' }}>
+                                            {{ $barangKeluar->id_transaksi }}
                                         </option>
                                     @endforeach
                                 </select>

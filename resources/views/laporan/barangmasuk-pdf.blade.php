@@ -73,10 +73,10 @@
                 <tr>
                     <td style="text-align: center">{{ $index + 1 }}</td>
                     <td style="text-align: center">{{ \Carbon\Carbon::parse($barang->tanggal)->format('d/m/Y') }}</td>
-                    <td style="text-align: center">{{ $barang->kelolaBarang->id_barang }}</td>
-                    <td>{{ $barang->kelolaBarang->nama_barang }}</td>
-                    <td style="text-align: center">{{ $barang->jumlah }}</td>
-                    <td style="text-align: center">{{ $barang->kelolaBarang->satuan->nama_satuan }}</td>
+                    <td style="text-align: center">{{ $barang->kelolaBarang->kode_barang ?? '-' }}</td>
+                    <td>{{ $barang->kelolaBarang->nama_barang ?? $barang->barang }}</td>
+                    <td style="text-align: center">{{ $barang->jumlah_masuk ?? $barang->jumlah }}</td>
+                    <td style="text-align: center">{{ $barang->kelolaBarang->satuan ?? $barang->satuan }}</td>
                 </tr>
             @endforeach
         </tbody>

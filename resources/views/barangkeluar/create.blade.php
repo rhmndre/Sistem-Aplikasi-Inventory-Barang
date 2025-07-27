@@ -9,6 +9,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    @if ($errors->any())
+                    <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                        <ul class="list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
                     <form action="{{ route('adminbarang.barangkeluar.store') }}" method="POST">
                         @csrf
                         <div class="grid grid-cols-1 gap-6">
@@ -25,31 +35,31 @@
                             </div>
 
                             <div>
-                                <x-input-label for="barang" value="Barang" />
-                                <select id="barang" name="barang" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                                <x-input-label for="items[0][barang]" value="Barang" />
+                                <select id="items[0][barang]" name="items[0][barang]" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                     <option value="">Pilih Barang</option>
                                     @foreach($kelolabarangs as $barang)
                                         <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
                                     @endforeach
                                 </select>
-                                <x-input-error :messages="$errors->get('barang')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('items.0.barang')" class="mt-2" />
                             </div>
 
                             <div>
-                                <x-input-label for="jumlah_keluar" value="Jumlah Keluar" />
-                                <x-text-input id="jumlah_keluar" name="jumlah_keluar" type="number" class="mt-1 block w-full" required />
-                                <x-input-error :messages="$errors->get('jumlah_keluar')" class="mt-2" />
+                                <x-input-label for="items[0][jumlah_keluar]" value="Jumlah Keluar" />
+                                <x-text-input id="items[0][jumlah_keluar]" name="items[0][jumlah_keluar]" type="number" class="mt-1 block w-full" required min="1" />
+                                <x-input-error :messages="$errors->get('items.0.jumlah_keluar')" class="mt-2" />
                             </div>
 
                             <div>
-                                <x-input-label for="satuan" value="Satuan" />
-                                <select id="satuan" name="satuan" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                                <x-input-label for="items[0][satuan]" value="Satuan" />
+                                <select id="items[0][satuan]" name="items[0][satuan]" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                     <option value="">Pilih Satuan</option>
                                     @foreach($satuans as $satuan)
                                         <option value="{{ $satuan->nama_satuan }}">{{ $satuan->nama_satuan }}</option>
                                     @endforeach
                                 </select>
-                                <x-input-error :messages="$errors->get('satuan')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('items.0.satuan')" class="mt-2" />
                             </div>
 
                             <div class="flex items-center gap-4">

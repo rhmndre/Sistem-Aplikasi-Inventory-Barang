@@ -22,4 +22,9 @@ class BarangKeluar extends Model
     {
         return $this->belongsTo(KelolaBarang::class, "barang", "nama_barang");
     }
+
+    public function faktur()
+    {
+        return $this->hasOne(Faktur::class, 'id_transaksi', 'id_transaksi');
+    }
 }
