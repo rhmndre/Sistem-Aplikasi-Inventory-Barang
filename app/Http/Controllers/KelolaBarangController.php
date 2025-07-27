@@ -37,7 +37,7 @@ class KelolaBarangController extends Controller
             'nama_barang' => 'required|string|max:255',
             'jenis_barang' => 'required|exists:jenis_barangs,nama_jenis',
             'stok' => 'required|integer|min:0',
-            'satuan' => 'required|exists:satuans,nama_satuan',
+            'satuan_id' => 'required|exists:satuans,id',
             'harga' => 'required|numeric|min:0',
             'keterangan' => 'required|string',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // max 2MB
@@ -46,7 +46,11 @@ class KelolaBarangController extends Controller
         try {
             DB::beginTransaction();
 
-            $data = $request->except(['foto', '_token']);
+            $data = $request->except(['foto', '_token', 'satuan_id']);
+            
+            // Ambil nama satuan berdasarkan id
+            $satuan = Satuan::findOrFail($request->satuan_id);
+            $data['satuan'] = $satuan->nama_satuan;
 
             // Generate kode barang berdasarkan jenis
             $jenis = JenisBarang::where('nama_jenis', $request->jenis_barang)->first();
