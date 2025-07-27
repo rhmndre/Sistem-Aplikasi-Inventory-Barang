@@ -16,7 +16,7 @@ class LaporanController extends Controller
     {
         $filter = $request->input('filter');
         $data = [];
-        
+
         if ($filter === 'all' || $filter === 'minimum') {
             $query = KelolaBarang::with(['satuan', 'jenisBarang']);
 
@@ -25,7 +25,7 @@ class LaporanController extends Controller
             }
 
             $data = $query->get();
-            
+
             // Transform data untuk view
             $data = $data->map(function($item) {
                 return [
@@ -34,7 +34,7 @@ class LaporanController extends Controller
                     'stok' => $item->stok,
                     'minimum' => $item->minimum,
                     'jenis_barang' => $item->jenisBarang->nama_jenis,
-                    'satuan' => $item->satuan->nama_satuan
+                    'satuan' => $item->satuan
                 ];
             });
         }
@@ -46,7 +46,7 @@ class LaporanController extends Controller
     {
         $filter = $request->input('filter', 'all');
         $data = [];
-        
+
         if ($filter === 'all' || $filter === 'minimum') {
             $query = KelolaBarang::with(['satuan', 'jenisBarang']);
 
@@ -55,7 +55,7 @@ class LaporanController extends Controller
             }
 
             $data = $query->get();
-            
+
             // Transform data untuk view
             $data = $data->map(function($item) {
                 return [
@@ -77,7 +77,7 @@ class LaporanController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-        
+
         $query = BarangMasuk::with(['kelolaBarang' => function($q) {
             $q->with('satuanBarang');
         }])->orderBy('tanggal', 'desc');
@@ -98,7 +98,7 @@ class LaporanController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-        
+
         $query = BarangMasuk::with(['kelolaBarang.satuan'])
             ->orderBy('tanggal', 'desc');
 
@@ -119,7 +119,7 @@ class LaporanController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-        
+
         $query = BarangKeluar::with(['kelolaBarang' => function($q) {
             $q->with('satuanBarang');
         }])->orderBy('tanggal', 'desc');
@@ -140,7 +140,7 @@ class LaporanController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-        
+
         $query = BarangKeluar::with(['kelolaBarang.satuan'])
             ->orderBy('tanggal', 'desc');
 
